@@ -1,57 +1,26 @@
 <?php
 /**
- * Copyright 2010 - 2026, Cake Development Corporation (https://www.cakedc.com)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright 2010 - 2026, Cake Development Corporation (https://www.cakedc.com)
- * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
-
-/*
  * Rules are evaluated top-down, first matching rule will apply.
  * Unauthenticated users only match rules with bypassAuth => true.
  */
 
 return [
     'CakeDC/Auth.permissions' => [
-        // CakeDC Users: login / register / password flow (no auth required)
+        // Elérhető auth flow: login + jelszó visszaállítás
         [
             'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => [
-                'socialLogin',
                 'login',
                 'logout',
-                'socialEmail',
-                'verify',
-                'register',
-                'validateEmail',
-                'changePassword',
-                'resetPassword',
                 'requestResetPassword',
-                'resendTokenValidation',
-                'linkSocial',
-                'webauthn2fa',
-                'webauthn2faRegister',
-                'webauthn2faRegisterOptions',
-                'webauthn2faAuthenticate',
-                'webauthn2faAuthenticateOptions',
-                'requestLoginLink',
-                'sendLoginLink',
-                'singleTokenLogin',
-            ],
-            'bypassAuth' => true,
-        ],
-        [
-            'prefix' => false,
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'SocialAccounts',
-            'action' => [
-                'validateAccount',
-                'resendValidation',
+                'resetPassword',
+                'changePassword',
+                // 'register', // sablon kész, de most nem elérhető
+                // 'validateEmail',
+                // 'socialLogin',
+                // 'socialEmail',
             ],
             'bypassAuth' => true,
         ],
@@ -82,26 +51,12 @@ return [
             'action' => '*',
         ],
 
-        // Logged-in users: profile / logout in Users plugin
+        // Logged-in users: profile / logout
         [
             'role' => '*',
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
-            'action' => ['profile', 'logout', 'linkSocial', 'callbackLinkSocial'],
-        ],
-        [
-            'role' => '*',
-            'plugin' => 'CakeDC/Users',
-            'controller' => 'Users',
-            'action' => 'resetOneTimePasswordAuthenticator',
-            'allowed' => function (array $user, $role, \Cake\Http\ServerRequest $request) {
-                $userId = \Cake\Utility\Hash::get($request->getAttribute('params'), 'pass.0');
-                if (!empty($userId) && !empty($user)) {
-                    return $userId === $user['id'];
-                }
-
-                return false;
-            },
+            'action' => ['profile', 'logout', 'changePassword'],
         ],
 
         [

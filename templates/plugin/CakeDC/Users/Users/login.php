@@ -1,54 +1,130 @@
 <?php
 /**
- * Copyright 2010 - 2026, Cake Development Corporation (https://www.cakedc.com)
+ * Tabler-stílusú bejelentkezés (KvAdmin / Tabler sign-in minta).
  *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright 2010 - 2026, Cake Development Corporation (https://www.cakedc.com)
- * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @var \App\View\AppView $this
  */
 
 use Cake\Core\Configure;
 
+$this->setLayout('auth');
+$this->assign('title', __('Bejelentkezés'));
+
+$rememberMeField = (string)Configure::read('Users.Key.Data.rememberMe', 'remember_me');
 ?>
-<div class="users form">
-    <?= $this->Flash->render('auth') ?>
-    <?= $this->Form->create() ?>
-    <fieldset>
-        <legend><?= __d('cake_d_c/users', 'Please enter your email and password') ?></legend>
-        <?= $this->Form->control('email', ['label' => __d('cake_d_c/users', 'Email'), 'type' => 'email', 'required' => true, 'autofocus' => 'autofocus']) ?>
-        <?= $this->Form->control('password', ['label' => __d('cake_d_c/users', 'Password'), 'required' => true]) ?>
-        <?php
-        if (Configure::read('Users.reCaptcha.login')) {
-            echo $this->User->addReCaptcha();
-        }
-        if (Configure::read('Users.RememberMe.active')) {
-            echo $this->Form->control(Configure::read('Users.Key.Data.rememberMe'), [
-                'type' => 'checkbox',
-                'label' => __d('cake_d_c/users', 'Remember me'),
-                'checked' => Configure::read('Users.RememberMe.checked')
-            ]);
-        }
-        ?>
-        <?php
-        $registrationActive = Configure::read('Users.Registration.active');
-        if ($registrationActive) {
-            echo $this->Html->link(__d('cake_d_c/users', 'Register'), ['action' => 'register']);
-        }
-        if (Configure::read('Users.Email.required')) {
-            if ($registrationActive) {
-                echo ' | ';
-            }
-            echo $this->Html->link(__d('cake_d_c/users', 'Reset Password'), ['action' => 'requestResetPassword']);
-            if (Configure::read('OneTimeLogin.enabled')) {
-                echo ' | ';
-                echo $this->Html->link(__d('cake_d_c/users', 'Send me a login link'), ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'requestLoginLink'], ['allowed' => true, 'escape' => false]);
-            }
-        }
-        ?>
-    </fieldset>
-    <?= implode(' ', $this->User->socialLoginList()); ?>
-    <?= $this->User->button(__d('cake_d_c/users', 'Login')); ?>
-    <?= $this->Form->end() ?>
+<div class="card card-md auth-card">
+    <div class="card-body">
+        <h2 class="h2 text-center mb-4"><?= __('Bejelentkezés a fiókodba') ?></h2>
+
+        <?= $this->Form->create(null, ['class' => 'auth-login-form']) ?>
+
+        <div class="mb-3">
+            <?= $this->Form->label('email', __('Email cím'), ['class' => 'form-label']) ?>
+            <?= $this->Form->email('email', [
+                'class' => 'form-control',
+                'placeholder' => 'pelda@email.hu',
+                'required' => true,
+                'autofocus' => true,
+                'autocomplete' => 'username',
+                'label' => false,
+                'templates' => ['inputContainer' => '{{content}}'],
+            ]) ?>
+        </div>
+
+        <div class="mb-2">
+            <label class="form-label" for="password">
+                <?= __('Jelszó') ?>
+                <span class="form-label-description">
+                    <?= $this->Html->link(
+                        __('Elfelejtettem a jelszavam'),
+                        ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'requestResetPassword']
+                    ) ?>
+                </span>
+            </label>
+            <?= $this->Form->password('password', [
+                'class' => 'form-control',
+                'placeholder' => __('A jelszavad'),
+                'required' => true,
+                'autocomplete' => 'current-password',
+                'label' => false,
+                'id' => 'password',
+                'templates' => ['inputContainer' => '{{content}}'],
+            ]) ?>
+        </div>
+
+        <?php if (Configure::read('Users.RememberMe.active')): ?>
+            <div class="mb-2">
+                <label class="form-check">
+                    <?= $this->Form->checkbox($rememberMeField, [
+                        'class' => 'form-check-input',
+                        'checked' => (bool)Configure::read('Users.RememberMe.checked'),
+                        'hiddenField' => false,
+                    ]) ?>
+                    <span class="form-check-label"><?= __('Emlékezz rám ezen az eszközön') ?></span>
+                </label>
+            </div>
+        <?php endif; ?>
+
+        <div class="form-footer">
+            <?= $this->Form->button(__('Bejelentkezés'), [
+                'class' => 'btn btn-primary w-100',
+                'type' => 'submit',
+            ]) ?>
+        </div>
+
+        <?= $this->Form->end() ?>
+    </div>
+
+    <?php /*
+    // Facebook + Google social login — később kapcsoljuk be (Users.Social.login + OAuth clientId/secret)
+    <div class="hr-text"><?= __('vagy') ?></div>
+    <div class="card-body">
+        <div class="row g-2">
+            <div class="col">
+                <?= $this->Html->link(
+                    $this->Html->tag(
+                        'span',
+                        $this->Html->image('KvAdmin./static/brands/facebook.svg', [
+                            'alt' => '',
+                        ]),
+                        ['class' => 'auth-social-icon']
+                    ) . h(__('Facebook')),
+                    '/auth/facebook',
+                    [
+                        'class' => 'btn btn-auth-facebook w-100 d-inline-flex align-items-center justify-content-center',
+                        'escape' => false,
+                    ]
+                ) ?>
+            </div>
+            <div class="col">
+                <?= $this->Html->link(
+                    $this->Html->tag(
+                        'span',
+                        $this->Html->image('KvAdmin./static/brands/google.svg', [
+                            'alt' => '',
+                        ]),
+                        ['class' => 'auth-social-icon']
+                    ) . h(__('Google')),
+                    '/auth/google',
+                    [
+                        'class' => 'btn btn-auth-google w-100 d-inline-flex align-items-center justify-content-center',
+                        'escape' => false,
+                    ]
+                ) ?>
+            </div>
+        </div>
+    </div>
+    */ ?>
 </div>
+
+<?php /*
+// Regisztráció — sablon kész, de jelenleg kikapcsolva (Users.Registration.active = false)
+<div class="text-center text-secondary mt-3">
+    <?= __('Még nincs fiókod?') ?>
+    <?= $this->Html->link(
+        __('Regisztráció'),
+        ['plugin' => 'CakeDC/Users', 'controller' => 'Users', 'action' => 'register'],
+        ['tabindex' => '-1']
+    ) ?>
+</div>
+*/ ?>
