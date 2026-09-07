@@ -10,70 +10,30 @@
  */
 
 /*
- * IMPORTANT:
- * This is an example configuration file. Copy this file into your config directory and edit to
- * set up your app permissions.
- *
- * This is a quick roles-permissions implementation
- * Rules are evaluated top-down, first matching rule will apply
- * Each line define
- *      [
- *          'role' => 'role' | ['roles'] | '*'
- *          'prefix' => 'Prefix' | , (default = null)
- *          'plugin' => 'Plugin' | , (default = null)
- *          'controller' => 'Controller' | ['Controllers'] | '*',
- *          'action' => 'action' | ['actions'] | '*',
- *          'allowed' => true | false | callback (default = true)
- *      ]
- * You could use '*' to match anything
- * 'allowed' will be considered true if not defined. It allows a callable to manage complex
- * permissions, like this
- * 'allowed' => function (array $user, $role, Request $request) {}
- *
- * Example, using allowed callable to define permissions only for the owner of the Posts to edit/delete
- *
- * (remember to add the 'uses' at the top of the permissions.php file for Hash, TableRegistry and Request
-   [
-        'role' => ['user'],
-        'controller' => ['Posts'],
-        'action' => ['edit', 'delete'],
-        'allowed' => function(array $user, $role, Request $request) {
-            $postId = Hash::get($request->params, 'pass.0');
-            $post = TableRegistry::getTableLocator()->get('Posts')->get($postId);
-            $userId = Hash::get($user, 'id');
-            if (!empty($post->user_id) && !empty($userId)) {
-                return $post->user_id === $userId;
-            }
-            return false;
-        }
-    ],
+ * Rules are evaluated top-down, first matching rule will apply.
+ * Unauthenticated users only match rules with bypassAuth => true.
  */
 
 return [
     'CakeDC/Auth.permissions' => [
-        //all bypass
+        // CakeDC Users: login / register / password flow (no auth required)
         [
             'prefix' => false,
             'plugin' => 'CakeDC/Users',
             'controller' => 'Users',
             'action' => [
-                // LoginTrait
                 'socialLogin',
                 'login',
                 'logout',
                 'socialEmail',
                 'verify',
-                // RegisterTrait
                 'register',
                 'validateEmail',
-                // PasswordManagementTrait used in RegisterTrait
                 'changePassword',
                 'resetPassword',
                 'requestResetPassword',
-                // UserValidationTrait used in PasswordManagementTrait
                 'resendTokenValidation',
                 'linkSocial',
-                //Webauthn2fa actions
                 'webauthn2fa',
                 'webauthn2faRegister',
                 'webauthn2faRegisterOptions',
@@ -95,16 +55,34 @@ return [
             ],
             'bypassAuth' => true,
         ],
-        //admin role allowed to all the things
+
+        // Public portfolio (no login)
+        [
+            'prefix' => false,
+            'plugin' => false,
+            'controller' => ['Pages', 'Photos', 'BlogPosts', 'ContactMessages'],
+            'action' => '*',
+            'bypassAuth' => true,
+        ],
+        [
+            'prefix' => false,
+            'plugin' => false,
+            'controller' => 'Error',
+            'action' => '*',
+            'bypassAuth' => true,
+        ],
+
+        // Admin prefix: only logged-in admin role
         [
             'role' => \CakeDC\Users\Model\Table\UsersTable::ROLE_ADMIN,
-            'prefix' => '*',
+            'prefix' => 'Admin',
             'extension' => '*',
             'plugin' => '*',
             'controller' => '*',
             'action' => '*',
         ],
-        //specific actions allowed for the all roles in Users plugin
+
+        // Logged-in users: profile / logout in Users plugin
         [
             'role' => '*',
             'plugin' => 'CakeDC/Users',
@@ -123,14 +101,9 @@ return [
                 }
 
                 return false;
-            }
+            },
         ],
-        //all roles allowed to Pages/display
-        [
-            'role' => '*',
-            'controller' => 'Pages',
-            'action' => 'display',
-        ],
+
         [
             'role' => '*',
             'plugin' => 'DebugKit',
@@ -138,5 +111,5 @@ return [
             'action' => '*',
             'bypassAuth' => true,
         ],
-    ]
+    ],
 ];
