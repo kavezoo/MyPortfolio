@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Page $page
  * @var string[]|\Cake\Collection\CollectionInterface $heroPhotos
+ * @var array<string, array{code: string, label: string}> $contentLocales
+ * @var string $defaultLocale
  */
 ?>
 
@@ -26,13 +28,6 @@
                 <?= $this->KvForm->linkTab(__('Datasheet'), '#tabs-datesheet', true) ?>
             </li>
 
-            <li class="nav-item" role="presentation">
-                <?= $this->KvForm->linkTab(__('Meta Description'), '#tabs-meta_description') ?>
-            </li>
-            <li class="nav-item" role="presentation">
-                <?= $this->KvForm->linkTab(__('Body'), '#tabs-body') ?>
-            </li>
-
             <li class="nav-item ms-auto" role="presentation">
                 <?= $this->KvForm->linkTabSettings() ?>
             </li>
@@ -49,19 +44,7 @@
                         <?= $this->Form->control('slug', ['label' => ['text' => __('Slug'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
                     </div>
                     <div class="col-md-6">
-                        <?= $this->Form->control('menu_label', ['label' => ['text' => __('Menu Label'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>
-                    <div class="col-md-6">
                         <?= $this->Form->control('url', ['label' => ['text' => __('Url'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('title', ['label' => ['text' => __('Title'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('hero_title', ['label' => ['text' => __('Hero Title'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('hero_lead', ['label' => ['text' => __('Hero Lead'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-md-6">
                         <?= $this->Form->control('hero_photo_id', [
@@ -83,52 +66,22 @@
                             'max' => 4294967295,
                             'step' => '1',
                         ]) ?>
-                        <?php
-                        /*
-                         * Spinner változat – ha numberSpinner kell, kommentezd ki a fenti Form->control blokkot
-                         * és vedd ki a kommentet az alábbi sorok körül:
-                         *
-                        <?= $this->KvForm->numberSpinner('page_blocks_count', [
-                            'label' => ['text' => __('Page Blocks Count')],
-                            'min' => 0,
-                            'max' => 4294967295,
-                            'step' => '1',
-                        ]) ?>
-                         */
-                        ?>
                     </div>
-
+                    <div class="col-12">
+                        <?= $this->element('i18n_locale_tabs', [
+                            'idPrefix' => 'page-i18n',
+                            'fields' => [
+                                ['name' => 'menu_label', 'label' => __('Menu Label')],
+                                ['name' => 'title', 'label' => __('Title'), 'required' => true],
+                                ['name' => 'hero_title', 'label' => __('Hero Title')],
+                                ['name' => 'hero_lead', 'label' => __('Hero Lead')],
+                                ['name' => 'meta_description', 'label' => __('Meta Description'), 'type' => 'textarea', 'rows' => 8, 'editor' => true, 'id' => 'hugerte-meta_description'],
+                                ['name' => 'body', 'label' => __('Body'), 'type' => 'textarea', 'rows' => 14, 'editor' => true, 'id' => 'hugerte-body'],
+                            ],
+                        ]) ?>
+                    </div>
                 </div>
             </div> <!-- /#tabs-datesheet -->
-
-            <!-- Text tab: meta_description -->
-            <div class="tab-pane fade" id="tabs-meta_description" role="tabpanel">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <?= $this->Form->control('meta_description', [
-                            'type' => 'textarea',
-                            'id' => 'hugerte-meta_description',
-                            'label' => false,
-                            'class' => 'form-control hugerte-editor',
-                            'rows' => 14,
-                        ]) ?>
-                    </div>
-                </div>
-            </div> <!-- /#tabs-meta_description -->
-            <!-- Text tab: body -->
-            <div class="tab-pane fade" id="tabs-body" role="tabpanel">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <?= $this->Form->control('body', [
-                            'type' => 'textarea',
-                            'id' => 'hugerte-body',
-                            'label' => false,
-                            'class' => 'form-control hugerte-editor',
-                            'rows' => 14,
-                        ]) ?>
-                    </div>
-                </div>
-            </div> <!-- /#tabs-body -->
 
             <!-- 3. Settings TAB -->
             <div class="tab-pane fade" id="tabs-settings" role="tabpanel">

@@ -59,8 +59,6 @@ return [
             'hu' => ['locale' => 'hu_HU', 'label' => 'Magyar', 'flag' => 'hu.png'],
             'en' => ['locale' => 'en_GB', 'label' => 'English', 'flag' => 'en.png'],
             'de' => ['locale' => 'de_DE', 'label' => 'Deutsch', 'flag' => 'de.png'],
-            'it' => ['locale' => 'it_IT', 'label' => 'Italiano', 'flag' => 'it.png'],
-            'fr' => ['locale' => 'fr_FR', 'label' => 'Français', 'flag' => 'fr.png'],
         ],
         'base' => false,
         'dir' => 'src',

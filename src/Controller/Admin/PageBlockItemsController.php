@@ -199,12 +199,13 @@ class PageBlockItemsController extends AppController
      */
     public function add()
     {
-        $pageBlockItem = $this->fetchTable('PageBlockItems')->newEmptyEntity();
+        $table = $this->fetchTable('PageBlockItems');
+        $pageBlockItem = $table->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $data = $this->getRequest()->getData();
-            $pageBlockItem = $this->fetchTable('PageBlockItems')->patchEntity($pageBlockItem, $data);
-            if ($this->fetchTable('PageBlockItems')->save($pageBlockItem)) {
-                $this->Flash->success(__('The {0} has been saved.'), __('page block item'), ['plugin' => 'KvAdmin']);
+            $pageBlockItem = $this->patchWithTranslations($table, $pageBlockItem, $data);
+            if ($table->save($pageBlockItem)) {
+                $this->Flash->success(__('The {0} has been saved.', __('page block item')), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->session->write('ScrollTo.Admin.pageBlockItem.id', $pageBlockItem->id ?? 0);
@@ -212,7 +213,7 @@ class PageBlockItemsController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $pageBlocks = $this->fetchTable('PageBlockItems')->PageBlocks->find('list', limit: 200)->all();
+        $pageBlocks = $table->PageBlocks->find('list', limit: 200)->all();
         $this->set(compact('pageBlockItem', 'pageBlocks'));
     }
     /**
@@ -224,14 +225,15 @@ class PageBlockItemsController extends AppController
      */
     public function edit($id = null)
     {
-        $pageBlockItem = $this->fetchTable('PageBlockItems')->get($id, contain: []);
-		$this->session->write('LastViewed.Admin.pageBlockItem_id', (int)$id ?? 0);
-		$this->session->write('ScrollTo.Admin.pageBlockItem_id', (int)$id ?? 0);
+        $table = $this->fetchTable('PageBlockItems');
+        $pageBlockItem = $this->getWithTranslations($table, $id);
+        $this->session->write('LastViewed.Admin.pageBlockItem_id', (int)$id ?? 0);
+        $this->session->write('ScrollTo.Admin.pageBlockItem_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
-            $pageBlockItem = $this->fetchTable('PageBlockItems')->patchEntity($pageBlockItem, $data);
-            if ($this->fetchTable('PageBlockItems')->save($pageBlockItem)) {
+            $pageBlockItem = $this->patchWithTranslations($table, $pageBlockItem, $data);
+            if ($table->save($pageBlockItem)) {
                 $this->Flash->success(__('The {0} has been saved.', __('page block item')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.PageBlockItems.params');
@@ -242,7 +244,7 @@ class PageBlockItemsController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $pageBlocks = $this->fetchTable('PageBlockItems')->PageBlocks->find('list', limit: 200)->all();
+        $pageBlocks = $table->PageBlocks->find('list', limit: 200)->all();
         $this->set(compact('pageBlockItem', 'pageBlocks'));
     }
     /**

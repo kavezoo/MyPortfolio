@@ -840,6 +840,64 @@ body.viewer-open {
     color: #ececec;
 }
 
+.viewer-share {
+    margin-top: 0.75rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid #3a3a3a;
+}
+
+.viewer-share-facebook {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: #2f3f6a;
+    color: #eef2ff;
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset;
+    transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.viewer-share-facebook-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: #1877f2;
+    color: #fff;
+    font-family: "Raleway", sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.viewer-share-facebook-label {
+    padding-right: 0.15rem;
+}
+
+.viewer-share-facebook:hover,
+.viewer-share-facebook:focus {
+    background: #3a4f82;
+    border-color: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.viewer-share-facebook[aria-disabled="true"] {
+    opacity: 0.45;
+    pointer-events: none;
+    transform: none;
+}
+
 @media (min-width: 992px) {
     .viewer.is-open {
         flex-direction: row;

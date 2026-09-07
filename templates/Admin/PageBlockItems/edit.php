@@ -3,6 +3,8 @@
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\PageBlockItem $pageBlockItem
  * @var string[]|\Cake\Collection\CollectionInterface $pageBlocks
+ * @var array<string, array{code: string, label: string}> $contentLocales
+ * @var string $defaultLocale
  */
 ?>
 
@@ -24,10 +26,6 @@
         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <?= $this->KvForm->linkTab(__('Datasheet'), '#tabs-datesheet', true) ?>
-            </li>
-
-            <li class="nav-item" role="presentation">
-                <?= $this->KvForm->linkTab(__('Body'), '#tabs-body') ?>
             </li>
 
             <li class="nav-item ms-auto" role="presentation">
@@ -57,24 +55,16 @@
                     <div class="col-md-6">
                         <?= $this->Form->control('url', ['label' => ['text' => __('Url'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
                     </div>
-
-                </div>
-            </div> <!-- /#tabs-datesheet -->
-
-            <!-- Text tab: body -->
-            <div class="tab-pane fade" id="tabs-body" role="tabpanel">
-                <div class="row g-3">
                     <div class="col-12">
-                        <?= $this->Form->control('body', [
-                            'type' => 'textarea',
-                            'id' => 'hugerte-body',
-                            'label' => false,
-                            'class' => 'form-control hugerte-editor',
-                            'rows' => 14,
+                        <?= $this->element('i18n_locale_tabs', [
+                            'idPrefix' => 'page-block-item-i18n',
+                            'fields' => [
+                                ['name' => 'body', 'label' => __('Body'), 'type' => 'textarea', 'rows' => 14, 'editor' => true, 'id' => 'hugerte-body'],
+                            ],
                         ]) ?>
                     </div>
                 </div>
-            </div> <!-- /#tabs-body -->
+            </div> <!-- /#tabs-datesheet -->
 
             <!-- 3. Settings TAB -->
             <div class="tab-pane fade" id="tabs-settings" role="tabpanel">

@@ -85,6 +85,7 @@ class PhotosController extends AppController
         $this->set('cities', $this->collectCities($photos));
         $this->set('title', $photo->title . ' – ' . ($page->title ?? ''));
         $this->set('openPhotoUuid', $uuid);
+        $this->set('sharePhoto', $photo);
     }
 
     /**

@@ -204,12 +204,15 @@ class PageBlocksController extends AppController
      */
     public function add()
     {
-        $pageBlock = $this->fetchTable('PageBlocks')->newEmptyEntity();
+        $table = $this->fetchTable('PageBlocks');
+        $pageBlock = $table->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $data = $this->getRequest()->getData();
-            $pageBlock = $this->fetchTable('PageBlocks')->patchEntity($pageBlock, $data);
-            if ($this->fetchTable('PageBlocks')->save($pageBlock)) {
-                $this->Flash->success(__('The {0} has been saved.'), __('page block'), ['plugin' => 'KvAdmin']);
+            $pageBlock = $this->patchWithTranslations($table, $pageBlock, $data, [
+                'associated' => ['Photos'],
+            ]);
+            if ($table->save($pageBlock)) {
+                $this->Flash->success(__('The {0} has been saved.', __('page block')), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->session->write('ScrollTo.Admin.pageBlock.id', $pageBlock->id ?? 0);
@@ -217,9 +220,9 @@ class PageBlocksController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $pages = $this->fetchTable('PageBlocks')->Pages->find('list', limit: 200)->all();
-        $featuredPhotos = $this->fetchTable('PageBlocks')->FeaturedPhotos->find('list', limit: 200)->all();
-        $photos = $this->fetchTable('PageBlocks')->Photos->find('list', limit: 200)->all();
+        $pages = $table->Pages->find('list', limit: 200)->all();
+        $featuredPhotos = $table->FeaturedPhotos->find('list', limit: 200)->all();
+        $photos = $table->Photos->find('list', limit: 200)->all();
         $this->set(compact('pageBlock', 'pages', 'featuredPhotos', 'photos'));
     }
     /**
@@ -231,14 +234,17 @@ class PageBlocksController extends AppController
      */
     public function edit($id = null)
     {
-        $pageBlock = $this->fetchTable('PageBlocks')->get($id, contain: ['Photos']);
-		$this->session->write('LastViewed.Admin.pageBlock_id', (int)$id ?? 0);
-		$this->session->write('ScrollTo.Admin.pageBlock_id', (int)$id ?? 0);
+        $table = $this->fetchTable('PageBlocks');
+        $pageBlock = $this->getWithTranslations($table, $id, ['Photos']);
+        $this->session->write('LastViewed.Admin.pageBlock_id', (int)$id ?? 0);
+        $this->session->write('ScrollTo.Admin.pageBlock_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
-            $pageBlock = $this->fetchTable('PageBlocks')->patchEntity($pageBlock, $data);
-            if ($this->fetchTable('PageBlocks')->save($pageBlock)) {
+            $pageBlock = $this->patchWithTranslations($table, $pageBlock, $data, [
+                'associated' => ['Photos'],
+            ]);
+            if ($table->save($pageBlock)) {
                 $this->Flash->success(__('The {0} has been saved.', __('page block')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.PageBlocks.params');
@@ -249,9 +255,9 @@ class PageBlocksController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $pages = $this->fetchTable('PageBlocks')->Pages->find('list', limit: 200)->all();
-        $featuredPhotos = $this->fetchTable('PageBlocks')->FeaturedPhotos->find('list', limit: 200)->all();
-        $photos = $this->fetchTable('PageBlocks')->Photos->find('list', limit: 200)->all();
+        $pages = $table->Pages->find('list', limit: 200)->all();
+        $featuredPhotos = $table->FeaturedPhotos->find('list', limit: 200)->all();
+        $photos = $table->Photos->find('list', limit: 200)->all();
         $this->set(compact('pageBlock', 'pages', 'featuredPhotos', 'photos'));
     }
     /**

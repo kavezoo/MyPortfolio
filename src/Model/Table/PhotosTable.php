@@ -102,7 +102,24 @@ class PhotosTable extends AppTable
     }
 
     /**
-     * Remove uploaded image (+ protect shield) after the DB row is gone.
+     * Remove uploaded image (+ protect shield) after the DB delete is committed.
+     *
+     * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
+     * @param \Cake\Datasource\EntityInterface $entity Photo entity.
+     * @param \ArrayObject<string, mixed> $options Options.
+     * @return void
+     */
+    public function afterDeleteCommit(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
+    {
+        if (!$entity instanceof \App\Model\Entity\Photo) {
+            return;
+        }
+
+        (new PhotoFileService())->deleteForPhoto($entity);
+    }
+
+    /**
+     * Also run on afterDelete for non-atomic deletes / nested association cascades.
      *
      * @param \Cake\Event\EventInterface<\Cake\ORM\Table> $event Event.
      * @param \Cake\Datasource\EntityInterface $entity Photo entity.
@@ -112,6 +129,11 @@ class PhotosTable extends AppTable
     public function afterDelete(EventInterface $event, EntityInterface $entity, ArrayObject $options): void
     {
         if (!$entity instanceof \App\Model\Entity\Photo) {
+            return;
+        }
+
+        // Skip when the primary atomic delete will fire afterDeleteCommit next.
+        if (!empty($options['atomic']) && !empty($options['_primary'])) {
             return;
         }
 
@@ -145,6 +167,11 @@ class PhotosTable extends AppTable
             ->scalar('code')
             ->maxLength('code', 50)
             ->allowEmptyString('code');
+
+        $validator
+            ->scalar('original_name')
+            ->maxLength('original_name', 255)
+            ->allowEmptyString('original_name');
 
         $validator
             ->scalar('filename')

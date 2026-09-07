@@ -46,10 +46,15 @@
             <div class="tab-pane fade show active" id="tabs-datesheet" role="tabpanel">
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <?= $this->Form->control('name', ['label' => ['text' => __('Name'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
-                    </div>
-                    <div class="col-md-6">
                         <?= $this->Form->control('slug', ['label' => ['text' => __('Slug'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
+                    </div>
+                    <div class="col-12">
+                        <?= $this->element('i18n_locale_tabs', [
+                            'idPrefix' => 'tag-i18n',
+                            'fields' => [
+                                ['name' => 'name', 'label' => __('Name'), 'required' => true],
+                            ],
+                        ]) ?>
                     </div>
                     <div class="col-md-6">
                         <?= $this->Form->control('photos_count', [

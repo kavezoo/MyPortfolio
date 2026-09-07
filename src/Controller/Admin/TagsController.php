@@ -196,11 +196,12 @@ class TagsController extends AppController
      */
     public function add()
     {
-        $tag = $this->fetchTable('Tags')->newEmptyEntity();
-        if ($this->getRequest()->is('post')) {
-            $data = $this->getRequest()->getData();
-            $tag = $this->fetchTable('Tags')->patchEntity($tag, $data);
-            if ($this->fetchTable('Tags')->save($tag)) {
+        $tag = $this->Tags->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $tag = $this->patchWithTranslations($this->Tags, $tag, $this->request->getData(), [
+                'associated' => ['Photos'],
+            ]);
+            if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The {0} has been saved.'), __('tag'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
@@ -209,7 +210,7 @@ class TagsController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $photos = $this->fetchTable('Tags')->Photos->find('list', limit: 200)->all();
+        $photos = $this->Tags->Photos->find('list', limit: 200)->all();
         $this->set(compact('tag', 'photos'));
     }
     /**
@@ -221,14 +222,15 @@ class TagsController extends AppController
      */
     public function edit($id = null)
     {
-        $tag = $this->fetchTable('Tags')->get($id, contain: ['Photos']);
+        $tag = $this->getWithTranslations($this->Tags, $id, ['Photos']);
 		$this->session->write('LastViewed.Admin.tag_id', (int)$id ?? 0);
 		$this->session->write('ScrollTo.Admin.tag_id', (int)$id ?? 0);
 
-        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $data = $this->getRequest()->getData();
-            $tag = $this->fetchTable('Tags')->patchEntity($tag, $data);
-            if ($this->fetchTable('Tags')->save($tag)) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $tag = $this->patchWithTranslations($this->Tags, $tag, $this->request->getData(), [
+                'associated' => ['Photos'],
+            ]);
+            if ($this->Tags->save($tag)) {
                 $this->Flash->success(__('The {0} has been saved.', __('tag')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.Tags.params');
@@ -239,7 +241,7 @@ class TagsController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $photos = $this->fetchTable('Tags')->Photos->find('list', limit: 200)->all();
+        $photos = $this->Tags->Photos->find('list', limit: 200)->all();
         $this->set(compact('tag', 'photos'));
     }
     /**

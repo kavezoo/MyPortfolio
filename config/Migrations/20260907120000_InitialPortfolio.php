@@ -92,6 +92,12 @@ class InitialPortfolio extends BaseMigration
                 'limit' => 50,
                 'null' => true,
             ])
+            ->addColumn('original_name', 'string', [
+                'default' => null,
+                'limit' => 255,
+                'null' => true,
+                'comment' => 'Original upload filename (e.g. IMG_4821.jpg), shown in the photo viewer',
+            ])
             ->addColumn('filename', 'string', [
                 'default' => null,
                 'limit' => 255,
@@ -171,6 +177,7 @@ class InitialPortfolio extends BaseMigration
             ->addIndex(['slug'], ['unique' => true])
             ->addIndex(['photo_category_id'])
             ->addIndex(['city'])
+            ->addIndex(['original_name'])
             ->addForeignKey('photo_category_id', 'photo_categories', 'id', [
                 'delete' => 'RESTRICT',
                 'update' => 'CASCADE',

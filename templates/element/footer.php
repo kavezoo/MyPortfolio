@@ -48,6 +48,12 @@ $facebook = $siteSettings['facebook_url'] ?? '';
         <p class="viewer-desc"></p>
         <dl class="viewer-facts"></dl>
         <div class="viewer-tags"></div>
+        <div class="viewer-share">
+            <a class="viewer-share-facebook" data-viewer-facebook href="#" target="_blank" rel="noopener noreferrer" title="<?= h(__('Share on Facebook')) ?>">
+                <span class="viewer-share-facebook-icon" aria-hidden="true">f</span>
+                <span class="viewer-share-facebook-label"><?= __('Share on Facebook') ?></span>
+            </a>
+        </div>
     </aside>
 </div>
 
@@ -70,6 +76,12 @@ $facebook = $siteSettings['facebook_url'] ?? '';
         <p class="viewer-desc" data-pano-desc></p>
         <dl class="viewer-facts" data-pano-facts></dl>
         <div class="viewer-tags" data-pano-tags></div>
+        <div class="viewer-share">
+            <a class="viewer-share-facebook" data-pano-facebook href="#" target="_blank" rel="noopener noreferrer" title="<?= h(__('Share on Facebook')) ?>">
+                <span class="viewer-share-facebook-icon" aria-hidden="true">f</span>
+                <span class="viewer-share-facebook-label"><?= __('Share on Facebook') ?></span>
+            </a>
+        </div>
     </aside>
 </div>
 
@@ -86,8 +98,9 @@ window.SITE_I18N = <?= json_encode([
     'date' => __('Date'),
     'time' => __('Time'),
     'resolution' => __('Resolution'),
+    'shareFacebook' => __('Share on Facebook'),
 ], JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
 </script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<?= $this->Html->script('site') ?>
+<?= $this->Html->script('site.js?v=' . (string)@filemtime(WWW_ROOT . 'js' . DS . 'site.js')) ?>

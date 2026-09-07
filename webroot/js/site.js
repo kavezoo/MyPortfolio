@@ -84,6 +84,27 @@ $(function () {
             return id ? ('/' + siteLang + '/foto/' + id) : basePagePath;
         }
 
+        function facebookShareHref(photo) {
+            var path = photoShareUrl(photo);
+            var absolute = /^https?:\/\//i.test(path) ? path : (window.location.origin + path);
+            return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(absolute);
+        }
+
+        function updateFacebookShare($link, photo) {
+            if (!$link.length) {
+                return;
+            }
+            if (!photo) {
+                $link.attr('href', '#').attr('aria-disabled', 'true');
+                return;
+            }
+            $link.attr('href', facebookShareHref(photo)).removeAttr('aria-disabled');
+        }
+
+        $(document).on('click', '[data-viewer-facebook], [data-pano-facebook]', function (e) {
+            e.stopPropagation();
+        });
+
         function setShareUrl(photo, replace) {
             if (syncingHistory || !window.history || !window.history.pushState) {
                 return;
@@ -150,7 +171,7 @@ $(function () {
             $viewer.find('[data-viewer-count]').text((index + 1) + ' / ' + photos.length);
             var t = window.SITE_I18N || {};
             $viewer.find('.viewer-facts').html(
-                fact(t.id || 'ID', photo.uuid || photo.id) +
+                fact(t.id || 'ID', photo.original_name || '') +
                 fact(t.location || 'Location', photo.location) +
                 fact(t.camera || 'Camera', exif.camera) +
                 fact(t.lens || 'Lens', exif.lens) +
@@ -166,6 +187,7 @@ $(function () {
                 return '<span class="viewer-tag">' + $('<div>').text(tag).html() + '</span>';
             }).join('');
             $viewer.find('.viewer-tags').html(tags);
+            updateFacebookShare($viewer.find('[data-viewer-facebook]'), photo);
             if (!options.skipUrl) {
                 setShareUrl(photo, !!options.replaceUrl);
             }
@@ -601,7 +623,7 @@ $(function () {
             $pano.find('[data-pano-desc]').text(photo.description || '');
             var t = window.SITE_I18N || {};
             $pano.find('[data-pano-facts]').html(
-                fact(t.id || 'ID', photo.uuid || photo.id) +
+                fact(t.id || 'ID', photo.original_name || '') +
                 fact(t.location || 'Location', photo.location) +
                 fact(t.camera || 'Camera', exif.camera) +
                 fact(t.lens || 'Lens', exif.lens) +
@@ -617,6 +639,7 @@ $(function () {
                 return '<span class="viewer-tag">' + $('<div>').text(tag).html() + '</span>';
             }).join('');
             $pano.find('[data-pano-tags]').html(tags);
+            updateFacebookShare($pano.find('[data-pano-facebook]'), photo);
             if (!options.skipUrl) {
                 setShareUrl(photo, !!options.replaceUrl);
             }

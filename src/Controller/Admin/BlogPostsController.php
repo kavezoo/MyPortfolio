@@ -196,11 +196,12 @@ class BlogPostsController extends AppController
      */
     public function add()
     {
-        $blogPost = $this->fetchTable('BlogPosts')->newEmptyEntity();
-        if ($this->getRequest()->is('post')) {
-            $data = $this->getRequest()->getData();
-            $blogPost = $this->fetchTable('BlogPosts')->patchEntity($blogPost, $data);
-            if ($this->fetchTable('BlogPosts')->save($blogPost)) {
+        $blogPost = $this->BlogPosts->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $blogPost = $this->patchWithTranslations($this->BlogPosts, $blogPost, $this->request->getData(), [
+                'associated' => ['Photos'],
+            ]);
+            if ($this->BlogPosts->save($blogPost)) {
                 $this->Flash->success(__('The {0} has been saved.'), __('blog post'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
@@ -209,7 +210,7 @@ class BlogPostsController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $photos = $this->fetchTable('BlogPosts')->Photos->find('list', limit: 200)->all();
+        $photos = $this->BlogPosts->Photos->find('list', limit: 200)->all();
         $this->set(compact('blogPost', 'photos'));
     }
     /**
@@ -221,14 +222,15 @@ class BlogPostsController extends AppController
      */
     public function edit($id = null)
     {
-        $blogPost = $this->fetchTable('BlogPosts')->get($id, contain: ['Photos']);
+        $blogPost = $this->getWithTranslations($this->BlogPosts, $id, ['Photos']);
 		$this->session->write('LastViewed.Admin.blogPost_id', (int)$id ?? 0);
 		$this->session->write('ScrollTo.Admin.blogPost_id', (int)$id ?? 0);
 
-        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $data = $this->getRequest()->getData();
-            $blogPost = $this->fetchTable('BlogPosts')->patchEntity($blogPost, $data);
-            if ($this->fetchTable('BlogPosts')->save($blogPost)) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $blogPost = $this->patchWithTranslations($this->BlogPosts, $blogPost, $this->request->getData(), [
+                'associated' => ['Photos'],
+            ]);
+            if ($this->BlogPosts->save($blogPost)) {
                 $this->Flash->success(__('The {0} has been saved.', __('blog post')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.BlogPosts.params');
@@ -239,7 +241,7 @@ class BlogPostsController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $photos = $this->fetchTable('BlogPosts')->Photos->find('list', limit: 200)->all();
+        $photos = $this->BlogPosts->Photos->find('list', limit: 200)->all();
         $this->set(compact('blogPost', 'photos'));
     }
     /**

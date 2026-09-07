@@ -4,6 +4,8 @@
  * @var \App\Model\Entity\Photo $photo
  * @var \Cake\Collection\CollectionInterface|string[] $photoCategories
  * @var \Cake\Collection\CollectionInterface|string[] $tags
+ * @var array<string, array{code: string, label: string}> $contentLocales
+ * @var string $defaultLocale
  */
 ?>
 <div class="page-header d-print-none mb-3">
@@ -29,7 +31,7 @@
                     'required' => true,
                     'accept' => 'image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif',
                 ]) ?>
-                <div class="form-hint"><?= __('EXIF data (camera, lens, exposure, date, …) is filled in automatically from the file.') ?></div>
+                <div class="form-hint"><?= __('Camera, lens, shutter, aperture, ISO, focal length, date and resolution are read automatically from the image EXIF data.') ?></div>
             </div>
             <div class="col-md-6">
                 <?= $this->Form->control('photo_category_id', [
@@ -41,10 +43,10 @@
                 ]) ?>
             </div>
             <div class="col-md-6">
-                <?= $this->Form->control('title', [
-                    'label' => ['text' => __('Title'), 'class' => 'form-label'],
+                <?= $this->Form->control('original_name', [
+                    'label' => ['text' => __('Original file name'), 'class' => 'form-label'],
                     'class' => 'form-control',
-                    'required' => true,
+                    'placeholder' => __('Filled automatically from the uploaded file'),
                 ]) ?>
             </div>
             <div class="col-md-6">
@@ -54,24 +56,15 @@
                     'placeholder' => __('Optional – generated from title'),
                 ]) ?>
             </div>
-            <div class="col-md-6">
-                <?= $this->Form->control('city', [
-                    'label' => ['text' => __('City'), 'class' => 'form-label'],
-                    'class' => 'form-control',
-                ]) ?>
-            </div>
-            <div class="col-md-6">
-                <?= $this->Form->control('location', [
-                    'label' => ['text' => __('Location'), 'class' => 'form-label'],
-                    'class' => 'form-control',
-                ]) ?>
-            </div>
             <div class="col-12">
-                <?= $this->Form->control('description', [
-                    'type' => 'textarea',
-                    'rows' => 4,
-                    'label' => ['text' => __('Description'), 'class' => 'form-label'],
-                    'class' => 'form-control',
+                <?= $this->element('i18n_locale_tabs', [
+                    'idPrefix' => 'photo-i18n',
+                    'fields' => [
+                        ['name' => 'title', 'label' => __('Title'), 'required' => true],
+                        ['name' => 'city', 'label' => __('City')],
+                        ['name' => 'location', 'label' => __('Location')],
+                        ['name' => 'description', 'label' => __('Description'), 'type' => 'textarea', 'rows' => 4],
+                    ],
                 ]) ?>
             </div>
             <div class="col-md-6">
@@ -90,35 +83,6 @@
             <div class="col-md-3">
                 <div class="form-label"><?= __('Visible') ?></div>
                 <?= $this->KvForm->switch('visible', ['label' => __('Visible'), 'value' => '1', 'checked' => true]) ?>
-            </div>
-
-            <div class="col-12"><hr class="my-2"><h3 class="mb-0"><?= __('EXIF (auto-filled)') ?></h3></div>
-            <div class="col-md-6">
-                <?= $this->Form->control('camera', ['label' => ['text' => __('Camera'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-6">
-                <?= $this->Form->control('lens', ['label' => ['text' => __('Lens'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('exposure', ['label' => ['text' => __('Shutter'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('aperture', ['label' => ['text' => __('Aperture'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('iso', ['label' => ['text' => __('ISO'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('focal', ['label' => ['text' => __('Focal length'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('shot_date', ['type' => 'date', 'label' => ['text' => __('Date'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('shot_time', ['type' => 'time', 'label' => ['text' => __('Time'), 'class' => 'form-label'], 'class' => 'form-control', 'step' => 1]) ?>
-            </div>
-            <div class="col-md-4">
-                <?= $this->Form->control('dimensions', ['label' => ['text' => __('Resolution'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
             </div>
             <div class="col-md-4">
                 <?= $this->Form->control('pos', [

@@ -91,22 +91,27 @@ $highlight = function (?string $text) use ($search): string {
 <?php if (isset($showId) && $showId): ?>
                     <th class="integer id"><?= $this->Paginator->sort('id', '#') ?></th>
 <?php endif; ?>
-                    <th class="uuid uuid"><?= $this->Paginator->sort('uuid') ?></th>
+                    <th class="string image"><?= __('Image') ?></th>
                     <th class="string photo_category_id"><?= $this->Paginator->sort('photo_category_id') ?></th>
                     <th class="string slug"><?= $this->Paginator->sort('slug') ?></th>
-                    <th class="string code"><?= $this->Paginator->sort('code') ?></th>
-                    <th class="string filename"><?= $this->Paginator->sort('filename') ?></th>
-                    <th class="string title"><?= $this->Paginator->sort('title') ?></th>
-                    <th class="string location"><?= $this->Paginator->sort('location') ?></th>
-                    <th class="string city"><?= $this->Paginator->sort('city') ?></th>
-                    <th class="string camera"><?= $this->Paginator->sort('camera') ?></th>
-                    <th class="string lens"><?= $this->Paginator->sort('lens') ?></th>
-                    <th class="string exposure"><?= $this->Paginator->sort('exposure') ?></th>
-                    <th class="string aperture"><?= $this->Paginator->sort('aperture') ?></th>
-                    <th class="string iso"><?= $this->Paginator->sort('iso') ?></th>
-                    <th class="string focal"><?= $this->Paginator->sort('focal') ?></th>
-                    <th class="date shot_date"><?= $this->Paginator->sort('shot_date') ?></th>
-                    <th class="time shot_time"><?= $this->Paginator->sort('shot_time') ?></th>
+                    <th class="string title">
+                        <?= $this->Paginator->sort('title', __('Title')) ?>
+                        <br><small class="text-secondary fw-normal"><?= __('City') ?> · <?= __('Location') ?></small>
+                    </th>
+                    <th class="string camera">
+                        <?= $this->Paginator->sort('camera', __('Camera')) ?>
+                        <br><small class="text-secondary fw-normal"><?= __('Lens') ?></small>
+                    </th>
+                    <th class="string exposure">
+                        <?= __('Exposure') ?>
+                        <br><small class="text-secondary fw-normal"><?= __('Aperture') ?></small>
+                        <br><small class="text-secondary fw-normal">ISO</small>
+                        <br><small class="text-secondary fw-normal"><?= __('Focal length') ?></small>
+                    </th>
+                    <th class="date shot_date">
+                        <?= $this->Paginator->sort('shot_date', __('Date')) ?>
+                        <br><small class="text-secondary fw-normal"><?= __('Time') ?></small>
+                    </th>
                     <th class="string dimensions"><?= $this->Paginator->sort('dimensions') ?></th>
                     <th class="boolean in_gallery"><?= $this->Paginator->sort('in_gallery') ?></th>
 <?php if (isset($showCounterFields) && $showCounterFields): ?>
@@ -147,24 +152,66 @@ $highlight = function (?string $text) use ($search): string {
 <?php if (isset($showId) && $showId): ?>
                     <td class="integer id"><?= h($photo->id) ?></td>
 <?php endif; ?>
-                    <td class="uuid uuid"><?= $highlight($photo->uuid) ?></td>
+                    <td class="string image py-2">
+                        <?php if (!empty($photo->filename) && $photo->filename !== 'pending'): ?>
+                            <a href="<?= h($photo->srcUrl()) ?>" target="_blank" rel="noopener" title="<?= h($photo->filename) ?>">
+                                <img
+                                    src="<?= h($photo->srcUrl()) ?>"
+                                    alt="<?= h($photo->title) ?>"
+                                    class="rounded border"
+                                    style="max-height: 160px; max-width: 200px; width: auto; height: auto; display: block; object-fit: contain;"
+                                    loading="lazy"
+                                >
+                            </a>
+                        <?php else: ?>
+                            <span class="text-muted">—</span>
+                        <?php endif; ?>
+                    </td>
                     <td class="string photo_category_id">
                         <?= $this->KvForm->linkBelongsToCell($photo, 'photo_category', 'name', 'PhotoCategories', 'id') ?>
                     </td>
                     <td class="string slug"><?= $highlight($photo->slug) ?></td>
-                    <td class="string code"><?= $highlight($photo->code) ?></td>
-                    <td class="string filename"><?= $highlight($photo->filename) ?></td>
-                    <td class="string title"><?= $highlight($photo->title) ?></td>
-                    <td class="string location"><?= $highlight($photo->location) ?></td>
-                    <td class="string city"><?= $highlight($photo->city) ?></td>
-                    <td class="string camera"><?= $highlight($photo->camera) ?></td>
-                    <td class="string lens"><?= $highlight($photo->lens) ?></td>
-                    <td class="string exposure"><?= $highlight($photo->exposure) ?></td>
-                    <td class="string aperture"><?= $highlight($photo->aperture) ?></td>
-                    <td class="string iso"><?= $highlight($photo->iso) ?></td>
-                    <td class="string focal"><?= $highlight($photo->focal) ?></td>
-                    <td class="date text-nowrap"><?= h($photo->shot_date?->format('Y-m-d')) ?></td>
-                    <td class="time shot_time"><?= $highlight($photo->shot_time) ?></td>
+                    <td class="string title">
+                        <strong><?= $highlight($photo->title) ?></strong>
+                        <?php if ($photo->original_name): ?>
+                            <br><span class="text-secondary"><code><?= $highlight($photo->original_name) ?></code></span>
+                        <?php endif; ?>
+                        <?php if ($photo->city): ?>
+                            <br><span class="text-secondary"><?= $highlight($photo->city) ?></span>
+                        <?php endif; ?>
+                        <?php if ($photo->location): ?>
+                            <br><span class="text-secondary"><?= $highlight($photo->location) ?></span>
+                        <?php endif; ?>
+                    </td>
+                    <td class="string camera">
+                        <?= $highlight($photo->camera) ?: '<span class="text-muted">—</span>' ?>
+                        <?php if ($photo->lens): ?>
+                            <br><span class="text-secondary"><?= $highlight($photo->lens) ?></span>
+                        <?php endif; ?>
+                    </td>
+                    <td class="string exposure text-nowrap">
+                        <?php if ($photo->exposure): ?>
+                            <div><?= $highlight($photo->exposure) ?></div>
+                        <?php endif; ?>
+                        <?php if ($photo->aperture): ?>
+                            <div class="text-secondary"><?= $highlight($photo->aperture) ?></div>
+                        <?php endif; ?>
+                        <?php if ($photo->iso !== null && $photo->iso !== ''): ?>
+                            <div class="text-secondary">ISO <?= $highlight((string)$photo->iso) ?></div>
+                        <?php endif; ?>
+                        <?php if ($photo->focal): ?>
+                            <div class="text-secondary"><?= $highlight($photo->focal) ?></div>
+                        <?php endif; ?>
+                        <?php if (!$photo->exposure && !$photo->aperture && ($photo->iso === null || $photo->iso === '') && !$photo->focal): ?>
+                            <span class="text-muted">—</span>
+                        <?php endif; ?>
+                    </td>
+                    <td class="date text-nowrap">
+                        <?= h($photo->shot_date?->format('Y-m-d')) ?: '<span class="text-muted">—</span>' ?>
+                        <?php if ($photo->shot_time): ?>
+                            <br><span class="text-secondary"><?= h(is_object($photo->shot_time) ? $photo->shot_time->format('H:i:s') : $photo->shot_time) ?></span>
+                        <?php endif; ?>
+                    </td>
                     <td class="string dimensions"><?= $highlight($photo->dimensions) ?></td>
                     <td class="boolean in_gallery"><?= $photo->in_gallery ? '<span class="badge bg-green-lt">' . __('Igen') . '</span>' : '<span class="badge bg-secondary-lt">' . __('Nem') . '</span>' ?></td>
 <?php if (isset($showCounterFields) && $showCounterFields): ?>

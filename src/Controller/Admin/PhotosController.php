@@ -186,26 +186,27 @@ class PhotosController extends AppController
             /** @var \Psr\Http\Message\UploadedFileInterface|null $upload */
             $upload = $data['image_file'] ?? null;
             unset($data['image_file'], $data['uuid'], $data['filename'], $data['tags_count']);
+            $data = $this->stripExifFields($data);
 
             if (!$upload instanceof UploadedFileInterface || $upload->getError() !== UPLOAD_ERR_OK) {
                 $this->Flash->error(__('Please choose an image to upload.'), ['plugin' => 'KvAdmin']);
             } else {
                 try {
-                    $tmpPath = $upload->getStream()->getMetadata('uri');
-                    if (is_string($tmpPath) && is_file($tmpPath)) {
-                        $data = $this->photoFiles->mergeExifIntoData($data, $this->photoFiles->extractExif($tmpPath), true);
-                    }
-
                     if (empty($data['slug']) && !empty($data['title'])) {
                         $data['slug'] = Text::slug(mb_strtolower((string)$data['title']), '-');
                     }
                     $data['filename'] = 'pending';
                     $data['code'] = $data['code'] ?? ($data['slug'] ?? null);
+                    if (empty($data['original_name'])) {
+                        $data['original_name'] = $this->photoFiles->originalNameFromUpload($upload);
+                    }
 
-                    $photo = $this->Photos->patchEntity($photo, $data);
+                    $photo = $this->patchWithTranslations($this->Photos, $photo, $data, [
+                        'associated' => ['Tags'],
+                    ]);
                     if ($this->Photos->save($photo)) {
                         $relative = $this->photoFiles->storeUploaded($photo, $upload);
-                        $photo->filename = $relative;
+                        $this->applyExifFromStoredFile($photo, $relative);
                         $this->Photos->saveOrFail($photo);
 
                         $this->Flash->success(__('The {0} has been saved.', __('photo')), ['plugin' => 'KvAdmin']);
@@ -233,7 +234,7 @@ class PhotosController extends AppController
      */
     public function edit($id = null)
     {
-        $photo = $this->Photos->get($id, contain: ['Tags']);
+        $photo = $this->getWithTranslations($this->Photos, $id, ['Tags']);
         $this->session->write('LastViewed.Admin.photo_id', (int)$id);
         $this->session->write('ScrollTo.Admin.photo_id', (int)$id);
         $oldFilename = (string)$photo->filename;
@@ -243,28 +244,25 @@ class PhotosController extends AppController
             /** @var \Psr\Http\Message\UploadedFileInterface|null $upload */
             $upload = $data['image_file'] ?? null;
             unset($data['image_file'], $data['uuid'], $data['filename'], $data['tags_count']);
+            $data = $this->stripExifFields($data);
 
             $hasNewFile = $upload instanceof UploadedFileInterface && $upload->getError() === UPLOAD_ERR_OK;
             try {
-                if ($hasNewFile) {
-                    $tmpPath = $upload->getStream()->getMetadata('uri');
-                    if (is_string($tmpPath) && is_file($tmpPath)) {
-                        $data = $this->photoFiles->mergeExifIntoData($data, $this->photoFiles->extractExif($tmpPath), true);
-                    }
-                }
-
                 if (empty($data['slug']) && !empty($data['title'])) {
                     $data['slug'] = Text::slug(mb_strtolower((string)$data['title']), '-');
                 }
+                if ($hasNewFile) {
+                    $data['original_name'] = $this->photoFiles->originalNameFromUpload($upload);
+                }
 
-                $photo = $this->Photos->patchEntity($photo, $data);
+                $photo = $this->patchWithTranslations($this->Photos, $photo, $data, [
+                    'associated' => ['Tags'],
+                ]);
                 if ($this->Photos->save($photo)) {
                     if ($hasNewFile) {
                         $relative = $this->photoFiles->storeUploaded($photo, $upload, $oldFilename);
-                        if ($relative !== $photo->filename) {
-                            $photo->filename = $relative;
-                            $this->Photos->saveOrFail($photo);
-                        }
+                        $this->applyExifFromStoredFile($photo, $relative);
+                        $this->Photos->saveOrFail($photo);
                     }
 
                     $this->Flash->success(__('The {0} has been saved.', __('photo')), ['plugin' => 'KvAdmin']);
@@ -287,55 +285,34 @@ class PhotosController extends AppController
     }
 
     /**
-     * AJAX: read EXIF from an uploaded image and return JSON for form autofill.
+     * Remove EXIF fields from request data — they come only from the uploaded file.
      *
-     * @return \Cake\Http\Response
+     * @param array<string, mixed> $data Request data.
+     * @return array<string, mixed>
      */
-    public function extractExif()
+    protected function stripExifFields(array $data): array
     {
-        $this->request->allowMethod(['post']);
-        $this->autoRender = false;
-
-        $upload = $this->request->getData('image_file');
-        if (!$upload instanceof UploadedFileInterface || $upload->getError() !== UPLOAD_ERR_OK) {
-            return $this->response
-                ->withType('application/json')
-                ->withStatus(400)
-                ->withStringBody(json_encode([
-                    'success' => false,
-                    'message' => __('Please choose an image to upload.'),
-                ]));
+        foreach (['camera', 'lens', 'exposure', 'aperture', 'iso', 'focal', 'shot_date', 'shot_time', 'dimensions'] as $field) {
+            unset($data[$field]);
         }
 
-        try {
-            $this->photoFiles->extensionFromUpload($upload);
-            $tmpPath = tempnam(sys_get_temp_dir(), 'exif');
-            if ($tmpPath === false) {
-                throw new \RuntimeException(__('Could not create upload directory.'));
-            }
-            $stream = $upload->getStream();
-            if ($stream->isSeekable()) {
-                $stream->rewind();
-            }
-            file_put_contents($tmpPath, (string)$stream->getContents());
-            $exif = $this->photoFiles->extractExif($tmpPath);
-            @unlink($tmpPath);
+        return $data;
+    }
 
-            return $this->response
-                ->withType('application/json')
-                ->withStringBody(json_encode([
-                    'success' => true,
-                    'exif' => $exif,
-                ]));
-        } catch (\Throwable $e) {
-            return $this->response
-                ->withType('application/json')
-                ->withStatus(422)
-                ->withStringBody(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage(),
-                ]));
-        }
+    /**
+     * Read EXIF from a stored image and patch the photo entity in memory.
+     *
+     * @param \App\Model\Entity\Photo $photo Photo entity.
+     * @param string $relative Relative path under img/.
+     * @return void
+     */
+    protected function applyExifFromStoredFile(\App\Model\Entity\Photo $photo, string $relative): void
+    {
+        $absolute = $this->photoFiles->absolutePath($relative);
+        $exif = $this->photoFiles->extractExif($absolute);
+        $data = $this->photoFiles->mergeExifIntoData(['filename' => $relative], $exif, true);
+        $this->Photos->patchEntity($photo, $data);
+        $photo->filename = $relative;
     }
 
     /**
@@ -370,6 +347,9 @@ class PhotosController extends AppController
         }
 
         if ($this->Photos->delete($photo)) {
+            // Safeguard: remove image + protect shield even if a model callback was skipped.
+            $this->photoFiles->deleteForPhoto($photo);
+
             $this->Flash->success(__('The {0} has been successfully deleted.', __('photo')), ['plugin' => 'KvAdmin']);
         } else {
             $this->Flash->error(__('Could not delete the record. Please try again.'), ['plugin' => 'KvAdmin']);

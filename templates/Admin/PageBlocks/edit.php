@@ -5,6 +5,8 @@
  * @var string[]|\Cake\Collection\CollectionInterface $pages
  * @var string[]|\Cake\Collection\CollectionInterface $featuredPhotos
  * @var string[]|\Cake\Collection\CollectionInterface $photos
+ * @var array<string, array{code: string, label: string}> $contentLocales
+ * @var string $defaultLocale
  */
 ?>
 
@@ -26,13 +28,6 @@
         <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <?= $this->KvForm->linkTab(__('Datasheet'), '#tabs-datesheet', true) ?>
-            </li>
-
-            <li class="nav-item" role="presentation">
-                <?= $this->KvForm->linkTab(__('Body'), '#tabs-body') ?>
-            </li>
-            <li class="nav-item" role="presentation">
-                <?= $this->KvForm->linkTab(__('Quote'), '#tabs-quote') ?>
             </li>
 
             <li class="nav-item ms-auto" role="presentation">
@@ -63,15 +58,6 @@
                         <?= $this->Form->control('layout', ['label' => ['text' => __('Layout'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-md-6">
-                        <?= $this->Form->control('title', ['label' => ['text' => __('Title'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('lead', ['label' => ['text' => __('Lead'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('button_label', ['label' => ['text' => __('Button Label'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
-                    </div>
-                    <div class="col-md-6">
                         <?= $this->Form->control('button_url', ['label' => ['text' => __('Button Url'), 'class' => 'form-label'], 'class' => 'form-control']) ?>
                     </div>
                     <div class="col-md-6">
@@ -91,19 +77,6 @@
                             'max' => 4294967295,
                             'step' => '1',
                         ]) ?>
-                        <?php
-                        /*
-                         * Spinner változat – ha numberSpinner kell, kommentezd ki a fenti Form->control blokkot
-                         * és vedd ki a kommentet az alábbi sorok körül:
-                         *
-                        <?= $this->KvForm->numberSpinner('page_block_items_count', [
-                            'label' => ['text' => __('Page Block Items Count')],
-                            'min' => 0,
-                            'max' => 4294967295,
-                            'step' => '1',
-                        ]) ?>
-                         */
-                        ?>
                     </div>
                     <div class="col-md-6">
                         <?= $this->Form->control('photos_count', [
@@ -114,19 +87,6 @@
                             'max' => 4294967295,
                             'step' => '1',
                         ]) ?>
-                        <?php
-                        /*
-                         * Spinner változat – ha numberSpinner kell, kommentezd ki a fenti Form->control blokkot
-                         * és vedd ki a kommentet az alábbi sorok körül:
-                         *
-                        <?= $this->KvForm->numberSpinner('photos_count', [
-                            'label' => ['text' => __('Photos Count')],
-                            'min' => 0,
-                            'max' => 4294967295,
-                            'step' => '1',
-                        ]) ?>
-                         */
-                        ?>
                     </div>
 
                     <!-- photos (Többes választás) -->
@@ -140,37 +100,20 @@
                             'empty' => false
                         ]) ?>
                     </div>
+                    <div class="col-12">
+                        <?= $this->element('i18n_locale_tabs', [
+                            'idPrefix' => 'page-block-i18n',
+                            'fields' => [
+                                ['name' => 'title', 'label' => __('Title')],
+                                ['name' => 'lead', 'label' => __('Lead')],
+                                ['name' => 'button_label', 'label' => __('Button Label')],
+                                ['name' => 'body', 'label' => __('Body'), 'type' => 'textarea', 'rows' => 14, 'editor' => true, 'id' => 'hugerte-body'],
+                                ['name' => 'quote', 'label' => __('Quote'), 'type' => 'textarea', 'rows' => 14, 'editor' => true, 'id' => 'hugerte-quote'],
+                            ],
+                        ]) ?>
+                    </div>
                 </div>
             </div> <!-- /#tabs-datesheet -->
-
-            <!-- Text tab: body -->
-            <div class="tab-pane fade" id="tabs-body" role="tabpanel">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <?= $this->Form->control('body', [
-                            'type' => 'textarea',
-                            'id' => 'hugerte-body',
-                            'label' => false,
-                            'class' => 'form-control hugerte-editor',
-                            'rows' => 14,
-                        ]) ?>
-                    </div>
-                </div>
-            </div> <!-- /#tabs-body -->
-            <!-- Text tab: quote -->
-            <div class="tab-pane fade" id="tabs-quote" role="tabpanel">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <?= $this->Form->control('quote', [
-                            'type' => 'textarea',
-                            'id' => 'hugerte-quote',
-                            'label' => false,
-                            'class' => 'form-control hugerte-editor',
-                            'rows' => 14,
-                        ]) ?>
-                    </div>
-                </div>
-            </div> <!-- /#tabs-quote -->
 
             <!-- 3. Settings TAB -->
             <div class="tab-pane fade" id="tabs-settings" role="tabpanel">

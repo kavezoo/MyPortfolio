@@ -164,7 +164,7 @@ class PhotoFileService
     }
 
     /**
-     * Delete a stored photo file if it lives under uploads/.
+     * Delete a stored photo file under webroot/img/ (path-traversal safe).
      *
      * @param string|null $relative Relative path from photos.filename.
      * @return void
@@ -175,17 +175,29 @@ class PhotoFileService
             return;
         }
 
-        $normalized = str_replace('\\', '/', ltrim($relative, '/'));
-        if (!str_starts_with($normalized, 'uploads/')) {
+        $normalized = str_replace('\\', '/', ltrim($relative, '/\\'));
+        if ($normalized === '' || str_contains($normalized, '..')) {
             return;
         }
 
         $absolute = $this->absolutePath($normalized);
+        $imgRoot = realpath(WWW_ROOT . 'img');
+        if ($imgRoot === false) {
+            return;
+        }
+
+        $parent = realpath(dirname($absolute));
+        if ($parent === false || !str_starts_with($parent, $imgRoot)) {
+            return;
+        }
+
         if (is_file($absolute)) {
             @unlink($absolute);
         }
 
-        $this->removeEmptyUploadDirs(dirname($absolute));
+        if (str_starts_with($normalized, 'uploads/')) {
+            $this->removeEmptyUploadDirs(dirname($absolute));
+        }
     }
 
     /**
@@ -296,6 +308,22 @@ class PhotoFileService
         }
 
         return $data;
+    }
+
+    /**
+     * Original client filename including extension (e.g. IMG_4821.jpg).
+     *
+     * @param \Psr\Http\Message\UploadedFileInterface $file Upload.
+     * @return string
+     */
+    public function originalNameFromUpload(UploadedFileInterface $file): string
+    {
+        $clientName = trim(str_replace(['\\', '/'], '', (string)$file->getClientFilename()));
+        if ($clientName === '') {
+            return '';
+        }
+
+        return mb_substr($clientName, 0, 255);
     }
 
     /**

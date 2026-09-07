@@ -36,8 +36,6 @@ return function (RouteBuilder $routes): void {
         'hu' => [],
         'en' => [],
         'de' => [],
-        'it' => [],
-        'fr' => [],
     ]);
     $langPattern = implode('|', $languages);
 

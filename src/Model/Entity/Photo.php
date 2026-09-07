@@ -16,6 +16,7 @@ use Cake\Routing\Router;
  * @property int $photo_category_id
  * @property string $slug
  * @property string|null $code
+ * @property string|null $original_name
  * @property string $filename
  * @property string $title
  * @property string|null $description
@@ -61,6 +62,7 @@ class Photo extends Entity
         'photo_category_id' => true,
         'slug' => true,
         'code' => true,
+        'original_name' => true,
         'filename' => true,
         'title' => true,
         'description' => true,
@@ -128,13 +130,51 @@ class Photo extends Entity
     }
 
     /**
-     * Display identifier shown in the photo viewer.
+     * Absolute public image URL (for Open Graph / social share).
+     *
+     * @return string
+     */
+    public function absoluteSrcUrl(): string
+    {
+        $filename = ltrim(str_replace('\\', '/', (string)$this->filename), '/');
+        if ($filename === '' || $filename === 'pending') {
+            return Router::url('/img/hero.jpg', true);
+        }
+
+        return Router::url('/img/' . $filename, true);
+    }
+
+    /**
+     * Absolute shareable viewer URL.
+     *
+     * @param string|null $lang Language code.
+     * @return string
+     */
+    public function absoluteShareUrl(?string $lang = null): string
+    {
+        $lang = $lang ?: (string)Configure::read('App.language', 'hu');
+
+        return Router::url('/' . $lang . '/foto/' . $this->uuid, true);
+    }
+
+    /**
+     * Display identifier shown in the photo viewer (original file name / serial).
      *
      * @return string
      */
     public function displayCode(): string
     {
-        return (string)$this->uuid;
+        $name = trim((string)($this->original_name ?? ''));
+        if ($name !== '') {
+            return $name;
+        }
+
+        $code = trim((string)($this->code ?? ''));
+        if ($code !== '') {
+            return $code;
+        }
+
+        return (string)$this->id;
     }
 
     /**
@@ -151,14 +191,17 @@ class Photo extends Entity
             }
         }
 
+        $sharePath = $this->shareUrl();
+
         return [
             'id' => $this->displayCode(),
             'uuid' => $this->uuid,
+            'original_name' => $this->displayCode(),
             'slug' => $this->slug,
             'file' => $this->filename,
             'src' => $this->srcUrl(),
             'shield' => $this->shieldUrl(),
-            'url' => $this->shareUrl(),
+            'url' => $sharePath,
             'title' => $this->title,
             'description' => $this->description,
             'location' => $this->location,

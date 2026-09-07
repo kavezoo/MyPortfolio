@@ -204,12 +204,13 @@ class PagesController extends AppController
      */
     public function add()
     {
-        $page = $this->fetchTable('Pages')->newEmptyEntity();
+        $table = $this->fetchTable('Pages');
+        $page = $table->newEmptyEntity();
         if ($this->getRequest()->is('post')) {
             $data = $this->getRequest()->getData();
-            $page = $this->fetchTable('Pages')->patchEntity($page, $data);
-            if ($this->fetchTable('Pages')->save($page)) {
-                $this->Flash->success(__('The {0} has been saved.'), __('page'), ['plugin' => 'KvAdmin']);
+            $page = $this->patchWithTranslations($table, $page, $data);
+            if ($table->save($page)) {
+                $this->Flash->success(__('The {0} has been saved.', __('page')), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
                 $this->session->write('ScrollTo.Admin.page.id', $page->id ?? 0);
@@ -217,7 +218,7 @@ class PagesController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $heroPhotos = $this->fetchTable('Pages')->HeroPhotos->find('list', limit: 200)->all();
+        $heroPhotos = $table->HeroPhotos->find('list', limit: 200)->all();
         $this->set(compact('page', 'heroPhotos'));
     }
     /**
@@ -229,14 +230,15 @@ class PagesController extends AppController
      */
     public function edit($id = null)
     {
-        $page = $this->fetchTable('Pages')->get($id, contain: []);
-		$this->session->write('LastViewed.Admin.page_id', (int)$id ?? 0);
-		$this->session->write('ScrollTo.Admin.page_id', (int)$id ?? 0);
+        $table = $this->fetchTable('Pages');
+        $page = $this->getWithTranslations($table, $id);
+        $this->session->write('LastViewed.Admin.page_id', (int)$id ?? 0);
+        $this->session->write('ScrollTo.Admin.page_id', (int)$id ?? 0);
 
         if ($this->getRequest()->is(['patch', 'post', 'put'])) {
             $data = $this->getRequest()->getData();
-            $page = $this->fetchTable('Pages')->patchEntity($page, $data);
-            if ($this->fetchTable('Pages')->save($page)) {
+            $page = $this->patchWithTranslations($table, $page, $data);
+            if ($table->save($page)) {
                 $this->Flash->success(__('The {0} has been saved.', __('page')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.Pages.params');
@@ -247,7 +249,7 @@ class PagesController extends AppController
             }
             $this->Flash->error(__('Could not save data. Please review the errors and try again.'), ['plugin' => 'KvAdmin']);
         }
-        $heroPhotos = $this->fetchTable('Pages')->HeroPhotos->find('list', limit: 200)->all();
+        $heroPhotos = $table->HeroPhotos->find('list', limit: 200)->all();
         $this->set(compact('page', 'heroPhotos'));
     }
     /**

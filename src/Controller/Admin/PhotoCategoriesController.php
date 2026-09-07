@@ -196,11 +196,14 @@ class PhotoCategoriesController extends AppController
      */
     public function add()
     {
-        $photoCategory = $this->fetchTable('PhotoCategories')->newEmptyEntity();
-        if ($this->getRequest()->is('post')) {
-            $data = $this->getRequest()->getData();
-            $photoCategory = $this->fetchTable('PhotoCategories')->patchEntity($photoCategory, $data);
-            if ($this->fetchTable('PhotoCategories')->save($photoCategory)) {
+        $photoCategory = $this->PhotoCategories->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $photoCategory = $this->patchWithTranslations(
+                $this->PhotoCategories,
+                $photoCategory,
+                $this->request->getData()
+            );
+            if ($this->PhotoCategories->save($photoCategory)) {
                 $this->Flash->success(__('The {0} has been saved.'), __('photo category'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
@@ -220,14 +223,17 @@ class PhotoCategoriesController extends AppController
      */
     public function edit($id = null)
     {
-        $photoCategory = $this->fetchTable('PhotoCategories')->get($id, contain: []);
+        $photoCategory = $this->getWithTranslations($this->PhotoCategories, $id);
 		$this->session->write('LastViewed.Admin.photoCategory_id', (int)$id ?? 0);
 		$this->session->write('ScrollTo.Admin.photoCategory_id', (int)$id ?? 0);
 
-        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $data = $this->getRequest()->getData();
-            $photoCategory = $this->fetchTable('PhotoCategories')->patchEntity($photoCategory, $data);
-            if ($this->fetchTable('PhotoCategories')->save($photoCategory)) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $photoCategory = $this->patchWithTranslations(
+                $this->PhotoCategories,
+                $photoCategory,
+                $this->request->getData()
+            );
+            if ($this->PhotoCategories->save($photoCategory)) {
                 $this->Flash->success(__('The {0} has been saved.', __('photo category')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.PhotoCategories.params');

@@ -1,16 +1,11 @@
 <?php
 /**
- * Tom Select + live EXIF fill for Photos add/edit forms.
+ * Tom Select for Photos add/edit forms.
  *
  * @var \App\View\AppView $this
  */
 
-$exifUrl = $this->Url->build(['prefix' => 'Admin', 'controller' => 'Photos', 'action' => 'extractExif']);
 $requiredSelectMessage = json_encode(__('This field cannot be left empty'));
-$exifReadingMessage = json_encode(__('Reading EXIF…'));
-$exifFilledMessage = json_encode(__('EXIF fields filled from the selected file. You can edit them before saving.'));
-$exifFailedMessage = json_encode(__('Could not read EXIF from this file. Fill the fields manually if needed.'));
-$exifUrlJson = json_encode($exifUrl);
 
 $this->Html->css([
     'KvAdmin./vendor/tom-select/css/tom-select.bootstrap5.min',
@@ -21,9 +16,6 @@ $this->Html->script(['KvAdmin./vendor/tom-select/js/tom-select.complete.min'], [
 $this->Html->scriptBlock(<<<JS
 document.addEventListener('DOMContentLoaded', function () {
     const requiredSelectMessage = {$requiredSelectMessage};
-    const exifReadingMessage = {$exifReadingMessage};
-    const exifFilledMessage = {$exifFilledMessage};
-    const exifFailedMessage = {$exifFailedMessage};
 
     document.querySelectorAll('.tom-select:not(.multi-select)').forEach(function (element) {
         if (element.tomselect || typeof TomSelect === 'undefined') {
@@ -128,89 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             copyClassesToDropdown: false,
             wrapperClass: 'ts-wrapper form-select multi'
         });
-    });
-
-    const fileInput = document.querySelector('input[type="file"][name="image_file"]');
-    if (!fileInput) {
-        return;
-    }
-
-    const fieldMap = {
-        camera: 'input[name="camera"]',
-        lens: 'input[name="lens"]',
-        exposure: 'input[name="exposure"]',
-        aperture: 'input[name="aperture"]',
-        iso: 'input[name="iso"]',
-        focal: 'input[name="focal"]',
-        shot_date: 'input[name="shot_date"]',
-        shot_time: 'input[name="shot_time"]',
-        dimensions: 'input[name="dimensions"]'
-    };
-
-    const setField = function (name, value) {
-        const el = document.querySelector(fieldMap[name]);
-        if (!el || value === null || value === undefined || value === '') {
-            return;
-        }
-        el.value = value;
-        el.dispatchEvent(new Event('input', { bubbles: true }));
-        el.dispatchEvent(new Event('change', { bubbles: true }));
-    };
-
-    const hint = (function () {
-        const parent = fileInput.closest('.col-12') || fileInput.parentElement;
-        return parent ? parent.querySelector('.form-hint') : null;
-    })();
-
-    fileInput.addEventListener('change', function () {
-        const file = fileInput.files && fileInput.files[0];
-        if (!file) {
-            return;
-        }
-
-        const form = fileInput.closest('form');
-        const tokenInput = form ? form.querySelector('input[name="_csrfToken"]') : null;
-        const body = new FormData();
-        body.append('image_file', file);
-        if (tokenInput) {
-            body.append('_csrfToken', tokenInput.value);
-        }
-
-        if (hint) {
-            hint.textContent = exifReadingMessage;
-        }
-
-        fetch({$exifUrlJson}, {
-            method: 'POST',
-            body: body,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Accept': 'application/json'
-            },
-            credentials: 'same-origin'
-        })
-            .then(function (response) {
-                return response.json().then(function (data) {
-                    return { ok: response.ok, data: data };
-                });
-            })
-            .then(function (result) {
-                if (!result.ok || !result.data || !result.data.success) {
-                    throw new Error((result.data && result.data.message) || 'EXIF read failed');
-                }
-                const exif = result.data.exif || {};
-                Object.keys(fieldMap).forEach(function (key) {
-                    setField(key, exif[key]);
-                });
-                if (hint) {
-                    hint.textContent = exifFilledMessage;
-                }
-            })
-            .catch(function () {
-                if (hint) {
-                    hint.textContent = exifFailedMessage;
-                }
-            });
     });
 });
 JS, ['block' => 'footer']);

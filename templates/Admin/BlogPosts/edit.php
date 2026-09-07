@@ -26,10 +26,6 @@
                 <?= $this->KvForm->linkTab(__('Datasheet'), '#tabs-datesheet', true) ?>
             </li>
 
-            <li class="nav-item" role="presentation">
-                <?= $this->KvForm->linkTab(__('Body'), '#tabs-body') ?>
-            </li>
-
             <li class="nav-item ms-auto" role="presentation">
                 <?= $this->KvForm->linkTabSettings() ?>
             </li>
@@ -45,11 +41,25 @@
                     <div class="col-md-6">
                         <?= $this->Form->control('slug', ['label' => ['text' => __('Slug'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
                     </div>
-                    <div class="col-md-6">
-                        <?= $this->Form->control('title', ['label' => ['text' => __('Title'), 'class' => 'form-label'], 'class' => 'form-control', 'required' => true]) ?>
-                    </div>
                     <div class="col-md-4">
                         <?= $this->KvForm->dateTimePicker('published', ['label' => ['text' => __('Published')]]) ?>
+                    </div>
+                    <div class="col-12">
+                        <?= $this->element('i18n_locale_tabs', [
+                            'idPrefix' => 'blog-post-i18n',
+                            'fields' => [
+                                ['name' => 'title', 'label' => __('Title'), 'required' => true],
+                                [
+                                    'name' => 'body',
+                                    'label' => __('Body'),
+                                    'type' => 'textarea',
+                                    'rows' => 14,
+                                    'editor' => true,
+                                    'id' => 'hugerte-body',
+                                    'col' => 'col-12',
+                                ],
+                            ],
+                        ]) ?>
                     </div>
                     <div class="col-md-6">
                         <?= $this->Form->control('photos_count', [
@@ -88,21 +98,6 @@
                     </div>
                 </div>
             </div> <!-- /#tabs-datesheet -->
-
-            <!-- Text tab: body -->
-            <div class="tab-pane fade" id="tabs-body" role="tabpanel">
-                <div class="row g-3">
-                    <div class="col-12">
-                        <?= $this->Form->control('body', [
-                            'type' => 'textarea',
-                            'id' => 'hugerte-body',
-                            'label' => false,
-                            'class' => 'form-control hugerte-editor',
-                            'rows' => 14,
-                        ]) ?>
-                    </div>
-                </div>
-            </div> <!-- /#tabs-body -->
 
             <!-- 3. Settings TAB -->
             <div class="tab-pane fade" id="tabs-settings" role="tabpanel">

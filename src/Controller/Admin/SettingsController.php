@@ -196,11 +196,10 @@ class SettingsController extends AppController
      */
     public function add()
     {
-        $setting = $this->fetchTable('Settings')->newEmptyEntity();
-        if ($this->getRequest()->is('post')) {
-            $data = $this->getRequest()->getData();
-            $setting = $this->fetchTable('Settings')->patchEntity($setting, $data);
-            if ($this->fetchTable('Settings')->save($setting)) {
+        $setting = $this->Settings->newEmptyEntity();
+        if ($this->request->is('post')) {
+            $setting = $this->patchWithTranslations($this->Settings, $setting, $this->request->getData());
+            if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The {0} has been saved.'), __('setting'), ['plugin' => 'KvAdmin']);
 
                 // Frissen létrehozott rekord megjelölése visszagörgetéshez az index nézetben
@@ -220,14 +219,13 @@ class SettingsController extends AppController
      */
     public function edit($id = null)
     {
-        $setting = $this->fetchTable('Settings')->get($id, contain: []);
+        $setting = $this->getWithTranslations($this->Settings, $id);
 		$this->session->write('LastViewed.Admin.setting_id', (int)$id ?? 0);
 		$this->session->write('ScrollTo.Admin.setting_id', (int)$id ?? 0);
 
-        if ($this->getRequest()->is(['patch', 'post', 'put'])) {
-            $data = $this->getRequest()->getData();
-            $setting = $this->fetchTable('Settings')->patchEntity($setting, $data);
-            if ($this->fetchTable('Settings')->save($setting)) {
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            $setting = $this->patchWithTranslations($this->Settings, $setting, $this->request->getData());
+            if ($this->Settings->save($setting)) {
                 $this->Flash->success(__('The {0} has been saved.', __('setting')), ['plugin' => 'KvAdmin']);
 
                 $redirectParams = (array)$this->session->read('Paging.Admin.Settings.params');
