@@ -51,6 +51,15 @@
                             ) ?>
                         </li>
 
+                        <li class="nav-item<?= ($controller ?? '') === 'Setup' ? ' active' : '' ?>">
+                            <?= $this->Html->link(
+                                '<span class="nav-link-icon d-md-none d-lg-inline-block">' . $this->Icon->outline('adjustments') . '</span>' .
+                                '<span class="nav-link-title">' . __('Setup') . '</span>',
+                                ['prefix' => 'Admin', 'controller' => 'Setup', 'action' => 'index'],
+                                ['escape' => false, 'class' => 'nav-link']
+                            ) ?>
+                        </li>
+
                         <li class="nav-item<?= ($controller ?? '') === 'Settings' ? ' active' : '' ?>">
                             <?= $this->Html->link(
                                 '<span class="nav-link-icon d-md-none d-lg-inline-block">' . $this->Icon->outline('settings') . '</span>' .

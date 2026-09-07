@@ -106,4 +106,71 @@ class SettingsTable extends AppTable
             ->combine('name', 'value')
             ->toArray();
     }
+
+    /**
+     * Read a setting value by name (any visibility).
+     *
+     * @param string $name Setting key.
+     * @param string|null $default Fallback.
+     * @return string|null
+     */
+    public function getValue(string $name, ?string $default = null): ?string
+    {
+        $setting = $this->find()
+            ->select(['value'])
+            ->where(['name' => $name])
+            ->first();
+
+        if ($setting === null) {
+            return $default;
+        }
+
+        $value = $setting->get('value');
+
+        return $value === null || $value === '' ? $default : (string)$value;
+    }
+
+    /**
+     * Whether a setting represents an enabled flag.
+     *
+     * @param string $name Setting key.
+     * @return bool
+     */
+    public function isEnabled(string $name): bool
+    {
+        $value = strtolower(trim((string)$this->getValue($name, '0')));
+
+        return in_array($value, ['1', 'true', 'yes', 'on'], true);
+    }
+
+    /**
+     * Create or update a setting by name.
+     *
+     * @param string $name Setting key.
+     * @param string|null $value Value.
+     * @param string|null $label Optional label on create.
+     * @param int|null $pos Optional position on create.
+     * @return \App\Model\Entity\Setting
+     */
+    public function setValue(
+        string $name,
+        ?string $value,
+        ?string $label = null,
+        ?int $pos = null,
+    ): \App\Model\Entity\Setting {
+        $setting = $this->find()->where(['name' => $name])->first();
+        if ($setting === null) {
+            $setting = $this->newEntity([
+                'name' => $name,
+                'label' => $label ?: $name,
+                'value' => $value,
+                'visible' => true,
+                'pos' => $pos ?? 100,
+            ]);
+        } else {
+            $setting = $this->patchEntity($setting, ['value' => $value]);
+        }
+
+        return $this->saveOrFail($setting);
+    }
 }

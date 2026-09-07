@@ -123,6 +123,8 @@ class SeedPortfolioCommand extends Command
             ['name' => 'viewer_border_color', 'label' => 'Képnéző keret színe', 'value' => '#8a8a8a', 'pos' => 60],
             ['name' => 'viewer_border_width', 'label' => 'Képnéző keret vastagsága', 'value' => '2', 'pos' => 70],
             ['name' => 'default_description', 'label' => 'Alapértelmezett leírás', 'value' => 'Fénykép album – galéria és panorámák.', 'pos' => 80],
+            ['name' => 'maintenance_mode', 'label' => 'Karbantartás mód', 'value' => '0', 'pos' => 90],
+            ['name' => 'maintenance_message', 'label' => 'Karbantartás üzenet', 'value' => 'Az oldal jelenleg karbantartás alatt áll.', 'pos' => 91],
         ];
         foreach ($rows as $row) {
             $table->saveOrFail($table->newEntity($row));
