@@ -37,5 +37,18 @@ class AppView extends View
      */
     public function initialize(): void
     {
+        parent::initialize();
+
+        $this->loadHelper('KvAdmin.SystemIcon');
+        $this->loadHelper('KvAdmin.Icon');
+        $this->loadHelper('KvAdmin.KvForm');
+
+        $this->addHelper('Photo');
+        $this->addHelper('Locale');
+        $this->Form->setTemplates([
+            'inputContainer' => '<div class="mb-3">{{content}}</div>',
+            'inputContainerError' => '<div class="mb-3">{{content}}{{error}}</div>',
+            'error' => '<div class="form-error">{{content}}</div>',
+        ]);
     }
 }

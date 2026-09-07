@@ -1,0 +1,404 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MyPortfolio\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Tags"
+msgstr "tag"
+
+msgid "All"
+msgstr "tutti"
+
+msgid "City"
+msgstr "città"
+
+msgid "All cities"
+msgstr "tutte le città"
+
+msgid "photo"
+msgstr "foto"
+
+msgid "panorama"
+msgstr "panorama"
+
+msgid "No photos match this filter."
+msgstr "Nessuna foto corrisponde a questo filtro."
+
+msgid "No panoramas match this filter."
+msgstr "Nessun panorama corrisponde a questo filtro."
+
+msgid "Pagination"
+msgstr "Paginazione"
+
+msgid "Previous page"
+msgstr "Pagina precedente"
+
+msgid "Next page"
+msgstr "Pagina successiva"
+
+msgid "Close"
+msgstr "Chiudi"
+
+msgid "Previous photo"
+msgstr "Foto precedente"
+
+msgid "Next photo"
+msgstr "Foto successiva"
+
+msgid "Previous panorama"
+msgstr "Panorama precedente"
+
+msgid "Next panorama"
+msgstr "Panorama successivo"
+
+msgid "Drag sideways · mouse wheel · arrow keys"
+msgstr "trascina · rotella · frecce"
+
+msgid "Click a photo to view it larger."
+msgstr "Clicca su una foto per vederla più grande."
+
+msgid "Open {0}"
+msgstr "Apri {0}"
+
+msgid "Previous photos"
+msgstr "Foto precedenti"
+
+msgid "Next photos"
+msgstr "Foto successive"
+
+msgid "Post photos"
+msgstr "Foto del post"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Phone"
+msgstr "Telefono"
+
+msgid "Message"
+msgstr "Messaggio"
+
+msgid "Send"
+msgstr "Invia"
+
+msgid "Thank you for your message. I will get back to you soon."
+msgstr "Grazie per il messaggio. Ti risponderò presto."
+
+msgid "The message could not be sent. Please check the data you entered."
+msgstr "Il messaggio non è stato inviato. Controlla i dati inseriti."
+
+msgid "Please enter your name."
+msgstr "Inserisci il tuo nome."
+
+msgid "Please enter a valid email address."
+msgstr "Inserisci un indirizzo email valido."
+
+msgid "Please enter your message."
+msgstr "Inserisci il tuo messaggio."
+
+msgid "Photo album – gallery and panoramas."
+msgstr "Album fotografico – galleria e panorami."
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Location"
+msgstr "Luogo"
+
+msgid "Camera"
+msgstr "Fotocamera"
+
+msgid "Lens"
+msgstr "Obiettivo"
+
+msgid "Shutter"
+msgstr "Tempo"
+
+msgid "Aperture"
+msgstr "Diaframma"
+
+msgid "ISO"
+msgstr "ISO"
+
+msgid "Focal length"
+msgstr "Focale"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Time"
+msgstr "Ora"
+
+msgid "Resolution"
+msgstr "Risoluzione"
+
+msgid "Dashboard"
+msgstr "Panoramica"
+
+msgid "Content"
+msgstr "Contenuti"
+
+msgid "Pages"
+msgstr "Pagine"
+
+msgid "Page blocks"
+msgstr "Blocchi pagina"
+
+msgid "Block items"
+msgstr "Elementi blocco"
+
+msgid "Photos"
+msgstr "Foto"
+
+msgid "Photo categories"
+msgstr "Categorie foto"
+
+msgid "Blog"
+msgstr "Blog"
+
+msgid "Messages"
+msgstr "Messaggi"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
+msgid "Public site"
+msgstr "Sito pubblico"
+
+msgid "You can edit the portfolio content here. Full admin login comes later."
+msgstr "Qui puoi modificare il contenuto del portfolio. L’accesso admin completo arriverà più tardi."
+
+msgid "Page"
+msgstr "Pagina"
+
+msgid "Photo"
+msgstr "Foto"
+
+msgid "Blog post"
+msgstr "Articolo del blog"
+
+msgid "Tag"
+msgstr "Tag"
+
+msgid "Setting"
+msgstr "Impostazione"
+
+msgid "Add photo"
+msgstr "Aggiungi foto"
+
+msgid "Edit photo"
+msgstr "Modifica foto"
+
+msgid "Image file"
+msgstr "File immagine"
+
+msgid "Replace image"
+msgstr "Sostituisci immagine"
+
+msgid "Current image"
+msgstr "Immagine attuale"
+
+msgid "Category"
+msgstr "Categoria"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Slug"
+msgstr "Slug"
+
+msgid "Description"
+msgstr "Descrizione"
+
+msgid "Optional – generated from title"
+msgstr "Opzionale – generato dal titolo"
+
+msgid "EXIF data (camera, lens, exposure, date, …) is filled in automatically from the file."
+msgstr "I dati EXIF (fotocamera, obiettivo, esposizione, data, …) vengono compilati automaticamente dal file."
+
+msgid "If you upload a new file, the old one is deleted and EXIF fields are refreshed."
+msgstr "Se carichi un nuovo file, il vecchio viene eliminato e i campi EXIF aggiornati."
+
+msgid "EXIF (auto-filled)"
+msgstr "EXIF (automatico)"
+
+msgid "In gallery"
+msgstr "In galleria"
+
+msgid "Visible"
+msgstr "Visibile"
+
+msgid "Position"
+msgstr "Posizione"
+
+msgid "Save"
+msgstr "Salva"
+
+msgid "Please choose an image to upload."
+msgstr "Scegli un’immagine da caricare."
+
+msgid "The image could not be uploaded."
+msgstr "Impossibile caricare l’immagine."
+
+msgid "The image could not be saved."
+msgstr "Impossibile salvare l’immagine."
+
+msgid "Could not create upload directory."
+msgstr "Impossibile creare la cartella di upload."
+
+msgid "Only JPG, PNG, WEBP or GIF images are allowed."
+msgstr "Sono consentite solo immagini JPG, PNG, WEBP o GIF."
+
+msgid "The page has been saved."
+msgstr "The page has been saved."
+
+msgid "The page could not be saved. Please, try again."
+msgstr "The page could not be saved. Please, try again."
+
+msgid "The page has been deleted."
+msgstr "The page has been deleted."
+
+msgid "The page could not be deleted. Please, try again."
+msgstr "The page could not be deleted. Please, try again."
+
+msgid "The page block has been saved."
+msgstr "The page block has been saved."
+
+msgid "The page block could not be saved. Please, try again."
+msgstr "The page block could not be saved. Please, try again."
+
+msgid "The page block has been deleted."
+msgstr "The page block has been deleted."
+
+msgid "The page block could not be deleted. Please, try again."
+msgstr "The page block could not be deleted. Please, try again."
+
+msgid "The page block item has been saved."
+msgstr "The page block item has been saved."
+
+msgid "The page block item could not be saved. Please, try again."
+msgstr "The page block item could not be saved. Please, try again."
+
+msgid "The page block item has been deleted."
+msgstr "The page block item has been deleted."
+
+msgid "The page block item could not be deleted. Please, try again."
+msgstr "The page block item could not be deleted. Please, try again."
+
+msgid "The page blocks photo has been saved."
+msgstr "The page blocks photo has been saved."
+
+msgid "The page blocks photo could not be saved. Please, try again."
+msgstr "The page blocks photo could not be saved. Please, try again."
+
+msgid "The page blocks photo has been deleted."
+msgstr "The page blocks photo has been deleted."
+
+msgid "The page blocks photo could not be deleted. Please, try again."
+msgstr "The page blocks photo could not be deleted. Please, try again."
+
+msgid "The photo has been saved."
+msgstr "The photo has been saved."
+
+msgid "The photo could not be saved. Please, try again."
+msgstr "The photo could not be saved. Please, try again."
+
+msgid "The photo has been deleted."
+msgstr "The photo has been deleted."
+
+msgid "The photo could not be deleted. Please, try again."
+msgstr "The photo could not be deleted. Please, try again."
+
+msgid "The photo category has been saved."
+msgstr "The photo category has been saved."
+
+msgid "The photo category could not be saved. Please, try again."
+msgstr "The photo category could not be saved. Please, try again."
+
+msgid "The photo category has been deleted."
+msgstr "The photo category has been deleted."
+
+msgid "The photo category could not be deleted. Please, try again."
+msgstr "The photo category could not be deleted. Please, try again."
+
+msgid "The tag has been saved."
+msgstr "The tag has been saved."
+
+msgid "The tag could not be saved. Please, try again."
+msgstr "The tag could not be saved. Please, try again."
+
+msgid "The tag has been deleted."
+msgstr "The tag has been deleted."
+
+msgid "The tag could not be deleted. Please, try again."
+msgstr "The tag could not be deleted. Please, try again."
+
+msgid "The photos tag has been saved."
+msgstr "The photos tag has been saved."
+
+msgid "The photos tag could not be saved. Please, try again."
+msgstr "The photos tag could not be saved. Please, try again."
+
+msgid "The photos tag has been deleted."
+msgstr "The photos tag has been deleted."
+
+msgid "The photos tag could not be deleted. Please, try again."
+msgstr "The photos tag could not be deleted. Please, try again."
+
+msgid "The blog post has been saved."
+msgstr "The blog post has been saved."
+
+msgid "The blog post could not be saved. Please, try again."
+msgstr "The blog post could not be saved. Please, try again."
+
+msgid "The blog post has been deleted."
+msgstr "The blog post has been deleted."
+
+msgid "The blog post could not be deleted. Please, try again."
+msgstr "The blog post could not be deleted. Please, try again."
+
+msgid "The blog posts photo has been saved."
+msgstr "The blog posts photo has been saved."
+
+msgid "The blog posts photo could not be saved. Please, try again."
+msgstr "The blog posts photo could not be saved. Please, try again."
+
+msgid "The blog posts photo has been deleted."
+msgstr "The blog posts photo has been deleted."
+
+msgid "The blog posts photo could not be deleted. Please, try again."
+msgstr "The blog posts photo could not be deleted. Please, try again."
+
+msgid "The contact message has been saved."
+msgstr "The contact message has been saved."
+
+msgid "The contact message could not be saved. Please, try again."
+msgstr "The contact message could not be saved. Please, try again."
+
+msgid "The contact message has been deleted."
+msgstr "The contact message has been deleted."
+
+msgid "The contact message could not be deleted. Please, try again."
+msgstr "The contact message could not be deleted. Please, try again."
+
+msgid "The setting has been saved."
+msgstr "The setting has been saved."
+
+msgid "The setting could not be saved. Please, try again."
+msgstr "The setting could not be saved. Please, try again."
+
+msgid "The setting has been deleted."
+msgstr "The setting has been deleted."
+
+msgid "The setting could not be deleted. Please, try again."
+msgstr "The setting could not be deleted. Please, try again."

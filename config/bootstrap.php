@@ -120,6 +120,7 @@ mb_internal_encoding(Configure::read('App.encoding'));
  * formatted and sets the default language to use for translations.
  */
 ini_set('intl.default_locale', Configure::read('App.defaultLocale'));
+\Cake\I18n\I18n::setLocale((string)Configure::read('App.defaultLocale'));
 
 /*
  * Register application error and exception handlers.
@@ -235,3 +236,13 @@ ServerRequest::addDetector('tablet', function ($request) {
 // and https://unicode-org.github.io/icu/userguide/format_parse/datetime/#datetime-format-syntax
 // \Cake\I18n\Date::setToStringFormat('dd.MM.yyyy');
 // \Cake\I18n\Time::setToStringFormat('dd.MM.yyyy HH:mm');
+
+/*
+ * KvAdmin bake theme + session (see https://packagist.org/packages/kavezoo/kvadmin)
+ */
+Configure::write('Bake.theme', 'KvAdmin');
+Configure::write('Session', [
+    'defaults' => 'php',
+    'cookie' => 'MyPortfolio',
+    'timeout' => 4320,
+]);

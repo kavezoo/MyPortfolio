@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "343b934ab0e60206ea2fb7aa51c9cc42",
+    "content-hash": "260eccd58d8b1b1f560669bfeb9a5711",
     "packages": [
         {
             "name": "cakephp/cakephp",
@@ -371,6 +371,44 @@
                 }
             ],
             "time": "2026-08-21T14:57:29+00:00"
+        },
+        {
+            "name": "kavezoo/kvadmin",
+            "version": "1.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kavezoo/kvadmin.git",
+                "reference": "34c08a7af41f3fbbc0a47e2ee5dc3b070cef9eba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kavezoo/kvadmin/zipball/34c08a7af41f3fbbc0a47e2ee5dc3b070cef9eba",
+                "reference": "34c08a7af41f3fbbc0a47e2ee5dc3b070cef9eba",
+                "shasum": ""
+            },
+            "require": {
+                "cakephp/cakephp": "^5.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^10.1"
+            },
+            "type": "cakephp-plugin",
+            "autoload": {
+                "psr-4": {
+                    "KvAdmin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "KvAdmin for Cakephp 5.4.* projects. Based on Tabler Admin Template",
+            "support": {
+                "issues": "https://github.com/kavezoo/kvadmin/issues",
+                "source": "https://github.com/kavezoo/kvadmin/tree/1.0.9"
+            },
+            "time": "2026-09-07T08:04:09+00:00"
         },
         {
             "name": "laminas/laminas-diactoros",
