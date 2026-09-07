@@ -66,5 +66,6 @@ class PageBlock extends Entity
         'featured_photo' => true,
         'page_block_items' => true,
         'photos' => true,
+        '_translations' => true,
     ];
 }

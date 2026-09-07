@@ -60,5 +60,6 @@ class Page extends Entity
         'modified' => true,
         'hero_photo' => true,
         'page_blocks' => true,
+        '_translations' => true,
     ];
 }

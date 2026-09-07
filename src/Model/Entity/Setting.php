@@ -39,5 +39,6 @@ class Setting extends Entity
         'pos' => true,
         'created' => true,
         'modified' => true,
+        '_translations' => true,
     ];
 }

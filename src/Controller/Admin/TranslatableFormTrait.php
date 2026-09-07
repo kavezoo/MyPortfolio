@@ -77,6 +77,14 @@ trait TranslatableFormTrait
             'associated' => [],
         ];
 
-        return $table->patchEntity($entity, $data, $options);
+        $entity = $table->patchEntity($entity, $data, $options);
+
+        // Marshal may update nested translation entities without marking the
+        // parent `_translations` property dirty; force it so Translate persists.
+        if (!empty($data['_translations'])) {
+            $entity->setDirty('_translations', true);
+        }
+
+        return $entity;
     }
 }

@@ -42,5 +42,6 @@ class Tag extends Entity
         'created' => true,
         'modified' => true,
         'photos' => true,
+        '_translations' => true,
     ];
 }

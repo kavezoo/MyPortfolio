@@ -44,5 +44,6 @@ class PageBlockItem extends Entity
         'created' => true,
         'modified' => true,
         'page_block' => true,
+        '_translations' => true,
     ];
 }

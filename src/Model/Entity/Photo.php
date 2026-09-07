@@ -77,6 +77,7 @@ class Photo extends Entity
         'shot_date' => true,
         'shot_time' => true,
         'dimensions' => true,
+        '_translations' => true,
         'in_gallery' => true,
         'tags_count' => true,
         'visible' => true,
