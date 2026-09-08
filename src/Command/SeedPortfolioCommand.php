@@ -168,7 +168,7 @@ class SeedPortfolioCommand extends Command
             if (!empty($exif['date'])) {
                 $shotDate = str_replace('.', '-', (string)$exif['date']);
             }
-            $minutes = 8 * 60 + (abs(crc32($slug)) % (11 * 60));
+            $minutes = (int)(8 * 60 + (abs((int)crc32($slug)) % (11 * 60)));
             $shotTime = sprintf('%02d:%02d:00', intdiv($minutes, 60), $minutes % 60);
 
             $photo = $photosTable->saveOrFail($photosTable->newEntity([

@@ -53,6 +53,11 @@ class PhotosTable extends AppTable
         $this->setDisplayField('title');
         $this->setPrimaryKey('id');
 
+        // ChronosTime uses microsecond ticks (TICKS_PER_DAY = 86400000000) which
+        // overflow to float on 32-bit PHP and break EXIF shot_time save/display.
+        // Keep the MySQL TIME column; treat it as string in the ORM.
+        $this->getSchema()->setColumnType('shot_time', 'string');
+
         $this->addTranslate([
             'title',
             'description',
@@ -234,8 +239,19 @@ class PhotosTable extends AppTable
             ->allowEmptyDate('shot_date');
 
         $validator
-            ->time('shot_time')
-            ->allowEmptyTime('shot_time');
+            ->scalar('shot_time')
+            ->maxLength('shot_time', 16)
+            ->allowEmptyString('shot_time')
+            ->add('shot_time', 'timeFormat', [
+                'rule' => function ($value) {
+                    if ($value === null || $value === '') {
+                        return true;
+                    }
+
+                    return (bool)preg_match('/^\d{1,2}:\d{2}(:\d{2})?$/', (string)$value);
+                },
+                'message' => 'Invalid time format',
+            ]);
 
         $validator
             ->scalar('dimensions')
@@ -288,7 +304,10 @@ class PhotosTable extends AppTable
         return $query
             ->find('visible')
             ->where(['Photos.in_gallery' => true])
-            ->contain(['Tags', 'PhotoCategories']);
+            ->contain(['Tags', 'PhotoCategories'])
+            ->notMatching('PhotoCategories', function (SelectQuery $q) {
+                return $q->where(['PhotoCategories.slug' => 'panorama']);
+            });
     }
 
     /**

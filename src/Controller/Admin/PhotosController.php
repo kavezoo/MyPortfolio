@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 
 use App\Service\PhotoFileService;
 use Cake\Http\Exception\NotFoundException;
+use Cake\Log\Log;
 use Cake\Utility\Text;
 use Psr\Http\Message\UploadedFileInterface;
 
@@ -197,9 +198,7 @@ class PhotosController extends AppController
                     }
                     $data['filename'] = 'pending';
                     $data['code'] = $data['code'] ?? ($data['slug'] ?? null);
-                    if (empty($data['original_name'])) {
-                        $data['original_name'] = $this->photoFiles->originalNameFromUpload($upload);
-                    }
+                    $data['original_name'] = $this->photoFiles->originalNameFromUpload($upload);
 
                     $photo = $this->patchWithTranslations($this->Photos, $photo, $data, [
                         'associated' => ['Tags'],
@@ -207,7 +206,7 @@ class PhotosController extends AppController
                     if ($this->Photos->save($photo)) {
                         $relative = $this->photoFiles->storeUploaded($photo, $upload);
                         $this->applyExifFromStoredFile($photo, $relative);
-                        $this->Photos->saveOrFail($photo);
+                        $this->Photos->saveOrFail($photo, ['associated' => []]);
 
                         $this->Flash->success(__('The {0} has been saved.', __('photo')), ['plugin' => 'KvAdmin']);
                         $this->session->write('ScrollTo.Admin.photo.id', $photo->id ?? 0);
@@ -253,6 +252,8 @@ class PhotosController extends AppController
                 }
                 if ($hasNewFile) {
                     $data['original_name'] = $this->photoFiles->originalNameFromUpload($upload);
+                } else {
+                    unset($data['original_name']);
                 }
 
                 $photo = $this->patchWithTranslations($this->Photos, $photo, $data, [
@@ -262,7 +263,7 @@ class PhotosController extends AppController
                     if ($hasNewFile) {
                         $relative = $this->photoFiles->storeUploaded($photo, $upload, $oldFilename);
                         $this->applyExifFromStoredFile($photo, $relative);
-                        $this->Photos->saveOrFail($photo);
+                        $this->Photos->saveOrFail($photo, ['associated' => []]);
                     }
 
                     $this->Flash->success(__('The {0} has been saved.', __('photo')), ['plugin' => 'KvAdmin']);
@@ -302,17 +303,35 @@ class PhotosController extends AppController
     /**
      * Read EXIF from a stored image and patch the photo entity in memory.
      *
+     * shot_date / shot_time are set as plain strings. shot_time is a string column
+     * in the ORM (see PhotosTable) because ChronosTime overflows on 32-bit PHP.
+     *
      * @param \App\Model\Entity\Photo $photo Photo entity.
      * @param string $relative Relative path under img/.
      * @return void
      */
     protected function applyExifFromStoredFile(\App\Model\Entity\Photo $photo, string $relative): void
     {
-        $absolute = $this->photoFiles->absolutePath($relative);
-        $exif = $this->photoFiles->extractExif($absolute);
-        $data = $this->photoFiles->mergeExifIntoData(['filename' => $relative], $exif, true);
-        $this->Photos->patchEntity($photo, $data);
         $photo->filename = $relative;
+        $photo->setDirty('_translations', false);
+        $photo->setDirty('tags', false);
+
+        try {
+            $absolute = $this->photoFiles->absolutePath($relative);
+            $exif = $this->photoFiles->extractExif($absolute);
+            $data = $this->photoFiles->mergeExifIntoData([], $exif, true);
+
+            foreach (['camera', 'lens', 'exposure', 'aperture', 'iso', 'focal', 'dimensions'] as $field) {
+                $photo->set($field, $data[$field] ?? null);
+            }
+
+            // Keep Y-m-d / H:i:s strings — TimeType/DateType toDatabase() accepts strings as-is.
+            $photo->set('shot_date', $data['shot_date'] ?? null);
+            $photo->set('shot_time', $data['shot_time'] ?? null);
+        } catch (\Throwable $e) {
+            // File is already stored; do not fail the upload because of EXIF parsing.
+            Log::warning('Photo EXIF apply failed: ' . $e->getMessage(), ['scope' => 'photos']);
+        }
     }
 
     /**

@@ -11,6 +11,20 @@ $this->Html->css([
     'KvAdmin./vendor/tom-select/css/tom-select.bootstrap5.min',
 ], ['block' => 'css']);
 
+$this->append('css', <<<'CSS'
+<style>
+/* Photo tags multi-select: taller control + dropdown (≈2× default) */
+.photos-form .ts-wrapper.multi .ts-control {
+    min-height: 6.5rem;
+    align-items: flex-start;
+}
+.photos-form .ts-wrapper.multi .ts-dropdown .ts-dropdown-content {
+    max-height: 400px;
+}
+</style>
+CSS
+);
+
 $this->Html->script(['KvAdmin./vendor/tom-select/js/tom-select.complete.min'], ['block' => 'script']);
 
 $this->Html->scriptBlock(<<<JS
@@ -121,6 +135,18 @@ document.addEventListener('DOMContentLoaded', function () {
             wrapperClass: 'ts-wrapper form-select multi'
         });
     });
+
+    // Original file name: fill from selected upload (not editable)
+    const imageInput = document.querySelector('input[type="file"][name="image_file"]');
+    const originalNameInput = document.querySelector('input[name="original_name"]');
+    if (imageInput && originalNameInput) {
+        imageInput.addEventListener('change', function () {
+            const file = imageInput.files && imageInput.files[0];
+            if (file && file.name) {
+                originalNameInput.value = file.name;
+            }
+        });
+    }
 });
 JS, ['block' => 'footer']);
 ?>

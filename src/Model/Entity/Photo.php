@@ -28,8 +28,8 @@ use Cake\Routing\Router;
  * @property string|null $aperture
  * @property string|null $iso
  * @property string|null $focal
- * @property \Cake\I18n\Date|null $shot_date
- * @property \Cake\I18n\Time|null $shot_time
+ * @property \Cake\I18n\Date|string|null $shot_date
+ * @property string|null $shot_time
  * @property string|null $dimensions
  * @property bool $in_gallery
  * @property int $tags_count
@@ -214,10 +214,52 @@ class Photo extends Entity
                 'aperture' => $this->aperture,
                 'iso' => $this->iso,
                 'focal' => $this->focal,
-                'date' => $this->shot_date ? $this->shot_date->format('Y.m.d') : null,
-                'time' => $this->shot_time ? $this->shot_time->format('H:i') : null,
+                'date' => $this->formatShotDate(),
+                'time' => $this->formatShotTime(),
                 'dimensions' => $this->dimensions,
             ],
         ];
+    }
+
+    /**
+     * Shot date for public viewer (Y.m.d).
+     *
+     * @return string|null
+     */
+    protected function formatShotDate(): ?string
+    {
+        if ($this->shot_date === null || $this->shot_date === '') {
+            return null;
+        }
+        if (is_object($this->shot_date) && method_exists($this->shot_date, 'format')) {
+            return $this->shot_date->format('Y.m.d');
+        }
+        $raw = (string)$this->shot_date;
+        if (preg_match('/^(\d{4})-(\d{2})-(\d{2})/', $raw, $m)) {
+            return $m[1] . '.' . $m[2] . '.' . $m[3];
+        }
+
+        return $raw;
+    }
+
+    /**
+     * Shot time for public viewer (H:i).
+     *
+     * @return string|null
+     */
+    protected function formatShotTime(): ?string
+    {
+        if ($this->shot_time === null || $this->shot_time === '') {
+            return null;
+        }
+        if (is_object($this->shot_time) && method_exists($this->shot_time, 'format')) {
+            return $this->shot_time->format('H:i');
+        }
+        $raw = (string)$this->shot_time;
+        if (preg_match('/^(\d{1,2}):(\d{2})/', $raw, $m)) {
+            return sprintf('%02d:%02d', (int)$m[1], (int)$m[2]);
+        }
+
+        return $raw;
     }
 }

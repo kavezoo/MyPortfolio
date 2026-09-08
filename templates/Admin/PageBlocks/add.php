@@ -111,8 +111,8 @@
                                 ['name' => 'title', 'label' => __('Title')],
                                 ['name' => 'lead', 'label' => __('Lead')],
                                 ['name' => 'button_label', 'label' => __('Button Label')],
-                                ['name' => 'body', 'label' => __('Body'), 'type' => 'textarea', 'rows' => 14, 'editor' => true, 'id' => 'hugerte-body'],
-                                ['name' => 'quote', 'label' => __('Quote'), 'type' => 'textarea', 'rows' => 14, 'editor' => true, 'id' => 'hugerte-quote'],
+                                ['name' => 'body', 'label' => __('Body'), 'type' => 'textarea', 'rows' => 14 /* , 'editor' => true, 'id' => 'hugerte-body' */],
+                                ['name' => 'quote', 'label' => __('Quote'), 'type' => 'textarea', 'rows' => 14 /* , 'editor' => true, 'id' => 'hugerte-quote' */],
                             ],
                         ]) ?>
                     </div>
@@ -187,7 +187,7 @@ $this->Html->css([
 */
 
 
-$this->Html->script(['KvAdmin./vendor/tom-select/js/tom-select.complete.min', 'KvAdmin./vendor/hugerte/hugerte.min'], ['block' => 'script']);
+$this->Html->script(['KvAdmin./vendor/tom-select/js/tom-select.complete.min' /* , 'KvAdmin./vendor/hugerte/hugerte.min' */], ['block' => 'script']);
 ?>
 
 <?php
@@ -318,6 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 JS, ['block' => 'footer']);
 
+/* HugeRTE disabled – plain textarea; uncomment (+ script include) to re-enable WYSIWYG
 // --- 4. HugeRTE szerkesztő (text mezők / tab fülök) ---
 $this->Html->scriptBlock(<<<'JS'
 document.addEventListener('DOMContentLoaded', function () {
@@ -373,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 JS, ['block' => 'footer']);
+*/
 
 /*
 // --- 5a. Flatpickr – dátum és idő – datetime mező hozzáadásakor vedd ki a kommentet ---

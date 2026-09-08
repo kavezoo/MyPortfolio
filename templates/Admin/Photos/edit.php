@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card photos-form">
     <?= $this->Form->create($photo, ['type' => 'file']) ?>
     <div class="card-body">
         <div class="row g-3">
@@ -41,6 +41,15 @@
                 ]) ?>
                 <div class="form-hint"><?= __('If you upload a new file, the old one is deleted and EXIF data (camera, lens, shutter, …) is refreshed from the new image.') ?></div>
             </div>
+            <div class="col-12">
+                <?= $this->Form->control('tags._ids', [
+                    'options' => $tags,
+                    'multiple' => true,
+                    'label' => ['text' => __('Tags'), 'class' => 'form-label'],
+                    'class' => 'form-select tom-select multi-select',
+                    'empty' => false,
+                ]) ?>
+            </div>
             <div class="col-md-6">
                 <?= $this->Form->control('photo_category_id', [
                     'options' => $photoCategories,
@@ -54,8 +63,10 @@
                 <?= $this->Form->control('original_name', [
                     'label' => ['text' => __('Original file name'), 'class' => 'form-label'],
                     'class' => 'form-control',
+                    'readonly' => true,
                     'placeholder' => __('Filled automatically from the uploaded file'),
                 ]) ?>
+                <div class="form-hint"><?= __('Updates automatically when you upload a new image.') ?></div>
             </div>
             <div class="col-md-6">
                 <?= $this->Form->control('slug', [
@@ -72,15 +83,6 @@
                         ['name' => 'location', 'label' => __('Location')],
                         ['name' => 'description', 'label' => __('Description'), 'type' => 'textarea', 'rows' => 4],
                     ],
-                ]) ?>
-            </div>
-            <div class="col-md-6">
-                <?= $this->Form->control('tags._ids', [
-                    'options' => $tags,
-                    'multiple' => true,
-                    'label' => ['text' => __('Tags'), 'class' => 'form-label'],
-                    'class' => 'form-select tom-select multi-select',
-                    'empty' => false,
                 ]) ?>
             </div>
             <div class="col-md-3">

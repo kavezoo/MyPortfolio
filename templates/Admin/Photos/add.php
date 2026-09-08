@@ -19,7 +19,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card photos-form">
     <?= $this->Form->create($photo, ['type' => 'file']) ?>
     <div class="card-body">
         <div class="row g-3">
@@ -32,6 +32,15 @@
                     'accept' => 'image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif',
                 ]) ?>
                 <div class="form-hint"><?= __('Camera, lens, shutter, aperture, ISO, focal length, date and resolution are read automatically from the image EXIF data.') ?></div>
+            </div>
+            <div class="col-12">
+                <?= $this->Form->control('tags._ids', [
+                    'options' => $tags,
+                    'multiple' => true,
+                    'label' => ['text' => __('Tags'), 'class' => 'form-label'],
+                    'class' => 'form-select tom-select multi-select',
+                    'empty' => false,
+                ]) ?>
             </div>
             <div class="col-md-6">
                 <?= $this->Form->control('photo_category_id', [
@@ -46,8 +55,10 @@
                 <?= $this->Form->control('original_name', [
                     'label' => ['text' => __('Original file name'), 'class' => 'form-label'],
                     'class' => 'form-control',
+                    'readonly' => true,
                     'placeholder' => __('Filled automatically from the uploaded file'),
                 ]) ?>
+                <div class="form-hint"><?= __('Set automatically when you choose an image file.') ?></div>
             </div>
             <div class="col-md-6">
                 <?= $this->Form->control('slug', [
@@ -65,15 +76,6 @@
                         ['name' => 'location', 'label' => __('Location')],
                         ['name' => 'description', 'label' => __('Description'), 'type' => 'textarea', 'rows' => 4],
                     ],
-                ]) ?>
-            </div>
-            <div class="col-md-6">
-                <?= $this->Form->control('tags._ids', [
-                    'options' => $tags,
-                    'multiple' => true,
-                    'label' => ['text' => __('Tags'), 'class' => 'form-label'],
-                    'class' => 'form-select tom-select multi-select',
-                    'empty' => false,
                 ]) ?>
             </div>
             <div class="col-md-3">

@@ -84,10 +84,11 @@ if ($fields === [] || $contentLocales === []) {
                         if (!empty($field['id'])) {
                             $control['id'] = $field['id'] . '-' . $meta['code'];
                         }
-                        if (!empty($field['editor'])) {
-                            $control['class'] = trim(($control['class'] ?? '') . ' hugerte-editor');
-                            $control['id'] = ($field['id'] ?? 'hugerte-' . $name) . '-' . $meta['code'];
-                        }
+                        // HugeRTE (WYSIWYG) – később, ha kell: 'editor' => true a field def-ben
+                        // if (!empty($field['editor'])) {
+                        //     $control['class'] = trim(($control['class'] ?? '') . ' hugerte-editor');
+                        //     $control['id'] = ($field['id'] ?? 'hugerte-' . $name) . '-' . $meta['code'];
+                        // }
                         ?>
                         <div class="<?= h($col) ?>">
                             <?= $this->Form->control($inputName, $control) ?>

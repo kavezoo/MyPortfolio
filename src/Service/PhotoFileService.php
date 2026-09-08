@@ -292,19 +292,28 @@ class PhotoFileService
     {
         foreach (['camera', 'lens', 'exposure', 'aperture', 'iso', 'focal', 'dimensions'] as $field) {
             $value = $exif[$field] ?? null;
+            if ($overwrite) {
+                $data[$field] = ($value === null || $value === '') ? null : $value;
+                continue;
+            }
             if ($value === null || $value === '') {
                 continue;
             }
-            if ($overwrite || empty($data[$field])) {
+            if (empty($data[$field])) {
                 $data[$field] = $value;
             }
         }
 
-        if (!empty($exif['shot_date']) && ($overwrite || empty($data['shot_date']))) {
-            $data['shot_date'] = $exif['shot_date'];
-        }
-        if (!empty($exif['shot_time']) && ($overwrite || empty($data['shot_time']))) {
-            $data['shot_time'] = $exif['shot_time'];
+        if ($overwrite) {
+            $data['shot_date'] = !empty($exif['shot_date']) ? $exif['shot_date'] : null;
+            $data['shot_time'] = !empty($exif['shot_time']) ? $exif['shot_time'] : null;
+        } else {
+            if (!empty($exif['shot_date']) && empty($data['shot_date'])) {
+                $data['shot_date'] = $exif['shot_date'];
+            }
+            if (!empty($exif['shot_time']) && empty($data['shot_time'])) {
+                $data['shot_time'] = $exif['shot_time'];
+            }
         }
 
         return $data;

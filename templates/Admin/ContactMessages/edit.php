@@ -60,9 +60,9 @@
                     <div class="col-12">
                         <?= $this->Form->control('message', [
                             'type' => 'textarea',
-                            'id' => 'hugerte-message',
+                            // 'id' => 'hugerte-message', // HugeRTE később
                             'label' => false,
-                            'class' => 'form-control hugerte-editor',
+                            'class' => 'form-control',
                             'rows' => 14,
                         ]) ?>
                     </div>
@@ -138,7 +138,7 @@ $this->Html->css([
 */
 
 
-$this->Html->script(['KvAdmin./vendor/imask/dist/imask.min', 'KvAdmin./vendor/hugerte/hugerte.min'], ['block' => 'script']);
+$this->Html->script(['KvAdmin./vendor/imask/dist/imask.min' /* , 'KvAdmin./vendor/hugerte/hugerte.min' */], ['block' => 'script']);
 ?>
 
 <?php
@@ -179,6 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
 JS, ['block' => 'footer']);
 */
 
+/* HugeRTE disabled – plain textarea; uncomment (+ script include) to re-enable WYSIWYG
 // --- 4. HugeRTE szerkesztő (text mezők / tab fülök) ---
 $this->Html->scriptBlock(<<<'JS'
 document.addEventListener('DOMContentLoaded', function () {
@@ -234,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 JS, ['block' => 'footer']);
+*/
 
 /*
 // --- 5a. Flatpickr – dátum és idő – datetime mező hozzáadásakor vedd ki a kommentet ---
