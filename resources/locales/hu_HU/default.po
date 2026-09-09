@@ -1,0 +1,410 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MyPortfolio\n"
+"Language: hu_HU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Menu"
+msgstr "Menü"
+
+msgid "Tags"
+msgstr "címkék"
+
+msgid "All"
+msgstr "összes"
+
+msgid "City"
+msgstr "város"
+
+msgid "All cities"
+msgstr "minden város"
+
+msgid "photo"
+msgstr "kép"
+
+msgid "panorama"
+msgstr "panoráma"
+
+msgid "No photos match this filter."
+msgstr "Ehhez a szűréshez nincs kép."
+
+msgid "No panoramas match this filter."
+msgstr "Ehhez a szűréshez nincs panoráma."
+
+msgid "Pagination"
+msgstr "Lapozás"
+
+msgid "Previous page"
+msgstr "Előző oldal"
+
+msgid "Next page"
+msgstr "Következő oldal"
+
+msgid "Close"
+msgstr "Bezárás"
+
+msgid "Previous photo"
+msgstr "Előző kép"
+
+msgid "Next photo"
+msgstr "Következő kép"
+
+msgid "Previous panorama"
+msgstr "Előző panoráma"
+
+msgid "Next panorama"
+msgstr "Következő panoráma"
+
+msgid "Drag sideways · mouse wheel · arrow keys"
+msgstr "húzd oldalra · egérkerék · nyilak"
+
+msgid "Click a photo to view it larger."
+msgstr "Kattints a képre a nagyobb méretű megtekintéshez."
+
+msgid "Open {0}"
+msgstr "{0} megnyitása"
+
+msgid "Previous photos"
+msgstr "Előző képek"
+
+msgid "Next photos"
+msgstr "Következő képek"
+
+msgid "Post photos"
+msgstr "A bejegyzés képei"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Phone"
+msgstr "Telefonszám"
+
+msgid "Message"
+msgstr "Üzenet"
+
+msgid "Send"
+msgstr "Küldés"
+
+msgid "Thank you for your message. I will get back to you soon."
+msgstr "Köszönöm az üzenetet. Hamarosan jelentkezem."
+
+msgid "The message could not be sent. Please check the data you entered."
+msgstr "Az üzenetet nem sikerült elküldeni. Ellenőrizd a megadott adatokat."
+
+msgid "Please enter your name."
+msgstr "Add meg a neved."
+
+msgid "Please enter a valid email address."
+msgstr "Érvényes e-mail címet adj meg."
+
+msgid "Please enter your message."
+msgstr "Írd meg az üzeneted."
+
+msgid "Photo album – gallery and panoramas."
+msgstr "Fénykép album – galéria és panorámák."
+
+msgid "ID"
+msgstr "Azonosító"
+
+msgid "Location"
+msgstr "Helyszín"
+
+msgid "Camera"
+msgstr "Gép"
+
+msgid "Lens"
+msgstr "Objektív"
+
+msgid "Shutter"
+msgstr "Záridő"
+
+msgid "Aperture"
+msgstr "Rekesz"
+
+msgid "ISO"
+msgstr "ISO"
+
+msgid "Focal length"
+msgstr "Fókusz"
+
+msgid "Date"
+msgstr "Dátum"
+
+msgid "Time"
+msgstr "Idő"
+
+msgid "Resolution"
+msgstr "Felbontás"
+
+msgid "Share on Facebook"
+msgstr "Megosztás"
+
+msgid "Share"
+msgstr "Megosztás"
+
+msgid "Dashboard"
+msgstr "Áttekintés"
+
+msgid "Content"
+msgstr "Tartalom"
+
+msgid "Pages"
+msgstr "Oldalak"
+
+msgid "Page blocks"
+msgstr "Oldalblokkok"
+
+msgid "Block items"
+msgstr "Blokk elemek"
+
+msgid "Photos"
+msgstr "Fotók"
+
+msgid "Photo categories"
+msgstr "Fotó kategóriák"
+
+msgid "Blog"
+msgstr "Blog"
+
+msgid "Messages"
+msgstr "Üzenetek"
+
+msgid "Settings"
+msgstr "Beállítások"
+
+msgid "Public site"
+msgstr "Nyilvános oldal"
+
+msgid "You can edit the portfolio content here. Full admin login comes later."
+msgstr "Itt szerkesztheted a portfólió tartalmát. A teljes admin bejelentkezés később jön."
+
+msgid "Page"
+msgstr "Oldal"
+
+msgid "Photo"
+msgstr "Fotó"
+
+msgid "Blog post"
+msgstr "Blogbejegyzés"
+
+msgid "Tag"
+msgstr "Címke"
+
+msgid "Setting"
+msgstr "Beállítás"
+
+msgid "Add photo"
+msgstr "Új fotó"
+
+msgid "Edit photo"
+msgstr "Fotó szerkesztése"
+
+msgid "Image file"
+msgstr "Képfájl"
+
+msgid "Replace image"
+msgstr "Kép cseréje"
+
+msgid "Current image"
+msgstr "Jelenlegi kép"
+
+msgid "Category"
+msgstr "Kategória"
+
+msgid "Title"
+msgstr "Cím"
+
+msgid "Slug"
+msgstr "Slug"
+
+msgid "Description"
+msgstr "Leírás"
+
+msgid "Optional – generated from title"
+msgstr "Opcionális – a címből generálódik"
+
+msgid "EXIF data (camera, lens, exposure, date, …) is filled in automatically from the file."
+msgstr "Az EXIF adatok (gép, objektív, záridő, dátum, …) a fájlból automatikusan kitöltődnek."
+
+msgid "If you upload a new file, the old one is deleted and EXIF fields are refreshed."
+msgstr "Új fájl feltöltésekor a régi törlődik, az EXIF mezők frissülnek."
+
+msgid "EXIF (auto-filled)"
+msgstr "EXIF (automatikus)"
+
+msgid "In gallery"
+msgstr "Galériában"
+
+msgid "Visible"
+msgstr "Látható"
+
+msgid "Position"
+msgstr "Sorrend"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Please choose an image to upload."
+msgstr "Válassz ki egy képet a feltöltéshez."
+
+msgid "The image could not be uploaded."
+msgstr "A képet nem sikerült feltölteni."
+
+msgid "The image could not be saved."
+msgstr "A képet nem sikerült menteni."
+
+msgid "Could not create upload directory."
+msgstr "Nem sikerült létrehozni a feltöltési mappát."
+
+msgid "Only JPG, PNG, WEBP or GIF images are allowed."
+msgstr "Csak JPG, PNG, WEBP vagy GIF képek engedélyezettek."
+
+msgid "The page has been saved."
+msgstr "Az oldal elmentve."
+
+msgid "The page could not be saved. Please, try again."
+msgstr "Az oldalt nem sikerült menteni. Próbáld újra."
+
+msgid "The page has been deleted."
+msgstr "Az oldal törölve."
+
+msgid "The page could not be deleted. Please, try again."
+msgstr "Az oldalt nem sikerült törölni. Próbáld újra."
+
+msgid "The page block has been saved."
+msgstr "Az oldalblokk elmentve."
+
+msgid "The page block could not be saved. Please, try again."
+msgstr "Az oldalblokkot nem sikerült menteni. Próbáld újra."
+
+msgid "The page block has been deleted."
+msgstr "Az oldalblokk törölve."
+
+msgid "The page block could not be deleted. Please, try again."
+msgstr "Az oldalblokkot nem sikerült törölni. Próbáld újra."
+
+msgid "The page block item has been saved."
+msgstr "A blokk elem elmentve."
+
+msgid "The page block item could not be saved. Please, try again."
+msgstr "A blokk elemet nem sikerült menteni. Próbáld újra."
+
+msgid "The page block item has been deleted."
+msgstr "A blokk elem törölve."
+
+msgid "The page block item could not be deleted. Please, try again."
+msgstr "A blokk elemet nem sikerült törölni. Próbáld újra."
+
+msgid "The page blocks photo has been saved."
+msgstr "Az oldalblokk–fotó kapcsolat elmentve."
+
+msgid "The page blocks photo could not be saved. Please, try again."
+msgstr "Az oldalblokk–fotó kapcsolatot nem sikerült menteni. Próbáld újra."
+
+msgid "The page blocks photo has been deleted."
+msgstr "Az oldalblokk–fotó kapcsolat törölve."
+
+msgid "The page blocks photo could not be deleted. Please, try again."
+msgstr "Az oldalblokk–fotó kapcsolatot nem sikerült törölni. Próbáld újra."
+
+msgid "The photo has been saved."
+msgstr "A fotó elmentve."
+
+msgid "The photo could not be saved. Please, try again."
+msgstr "A fotót nem sikerült menteni. Próbáld újra."
+
+msgid "The photo has been deleted."
+msgstr "A fotó törölve."
+
+msgid "The photo could not be deleted. Please, try again."
+msgstr "A fotót nem sikerült törölni. Próbáld újra."
+
+msgid "The photo category has been saved."
+msgstr "A fotó kategória elmentve."
+
+msgid "The photo category could not be saved. Please, try again."
+msgstr "A fotó kategóriát nem sikerült menteni. Próbáld újra."
+
+msgid "The photo category has been deleted."
+msgstr "A fotó kategória törölve."
+
+msgid "The photo category could not be deleted. Please, try again."
+msgstr "A fotó kategóriát nem sikerült törölni. Próbáld újra."
+
+msgid "The tag has been saved."
+msgstr "A címke elmentve."
+
+msgid "The tag could not be saved. Please, try again."
+msgstr "A címkét nem sikerült menteni. Próbáld újra."
+
+msgid "The tag has been deleted."
+msgstr "A címke törölve."
+
+msgid "The tag could not be deleted. Please, try again."
+msgstr "A címkét nem sikerült törölni. Próbáld újra."
+
+msgid "The photos tag has been saved."
+msgstr "A fotó–címke kapcsolat elmentve."
+
+msgid "The photos tag could not be saved. Please, try again."
+msgstr "A fotó–címke kapcsolatot nem sikerült menteni. Próbáld újra."
+
+msgid "The photos tag has been deleted."
+msgstr "A fotó–címke kapcsolat törölve."
+
+msgid "The photos tag could not be deleted. Please, try again."
+msgstr "A fotó–címke kapcsolatot nem sikerült törölni. Próbáld újra."
+
+msgid "The blog post has been saved."
+msgstr "A blogbejegyzés elmentve."
+
+msgid "The blog post could not be saved. Please, try again."
+msgstr "A blogbejegyzést nem sikerült menteni. Próbáld újra."
+
+msgid "The blog post has been deleted."
+msgstr "A blogbejegyzés törölve."
+
+msgid "The blog post could not be deleted. Please, try again."
+msgstr "A blogbejegyzést nem sikerült törölni. Próbáld újra."
+
+msgid "The blog posts photo has been saved."
+msgstr "A blog–fotó kapcsolat elmentve."
+
+msgid "The blog posts photo could not be saved. Please, try again."
+msgstr "A blog–fotó kapcsolatot nem sikerült menteni. Próbáld újra."
+
+msgid "The blog posts photo has been deleted."
+msgstr "A blog–fotó kapcsolat törölve."
+
+msgid "The blog posts photo could not be deleted. Please, try again."
+msgstr "A blog–fotó kapcsolatot nem sikerült törölni. Próbáld újra."
+
+msgid "The contact message has been saved."
+msgstr "Az üzenet elmentve."
+
+msgid "The contact message could not be saved. Please, try again."
+msgstr "Az üzenetet nem sikerült menteni. Próbáld újra."
+
+msgid "The contact message has been deleted."
+msgstr "Az üzenet törölve."
+
+msgid "The contact message could not be deleted. Please, try again."
+msgstr "Az üzenetet nem sikerült törölni. Próbáld újra."
+
+msgid "The setting has been saved."
+msgstr "A beállítás elmentve."
+
+msgid "The setting could not be saved. Please, try again."
+msgstr "A beállítást nem sikerült menteni. Próbáld újra."
+
+msgid "The setting has been deleted."
+msgstr "A beállítás törölve."
+
+msgid "The setting could not be deleted. Please, try again."
+msgstr "A beállítást nem sikerült törölni. Próbáld újra."

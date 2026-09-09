@@ -1,0 +1,11 @@
+<?php
+/**
+ * @var \App\View\AppView $this
+ * @var \App\Model\Entity\Page $page
+ */
+?>
+<?= $this->element('hero', ['page' => $page]) ?>
+
+<?php foreach ($page->page_blocks as $block): ?>
+    <?= $this->element('blocks/' . $block->block_type, compact('block')) ?>
+<?php endforeach; ?>

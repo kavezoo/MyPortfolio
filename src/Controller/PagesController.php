@@ -16,58 +16,36 @@ declare(strict_types=1);
  */
 namespace App\Controller;
 
-use Cake\Core\Configure;
-use Cake\Http\Exception\ForbiddenException;
-use Cake\Http\Exception\NotFoundException;
-use Cake\Http\Response;
-use Cake\View\Exception\MissingTemplateException;
-
 /**
- * Static content controller
+ * Pages Controller
  *
- * This controller will render views from templates/Pages/
- *
- * @link https://book.cakephp.org/5/en/controllers/pages-controller.html
+ * @property \App\Model\Table\PagesTable $Pages
  */
 class PagesController extends AppController
 {
     /**
-     * Displays a view
+     * Home page
      *
-     * @param string ...$path Path segments.
-     * @return \Cake\Http\Response|null
-     * @throws \Cake\Http\Exception\ForbiddenException When a directory traversal attempt.
-     * @throws \Cake\View\Exception\MissingTemplateException When the view file could not
-     *   be found and in debug mode.
-     * @throws \Cake\Http\Exception\NotFoundException When the view file could not
-     *   be found and not in debug mode.
-     * @throws \Cake\View\Exception\MissingTemplateException In debug mode.
+     * @return void
      */
-    public function display(string ...$path): ?Response
+    public function home(): void
     {
-        if (!$path) {
-            return $this->redirect('/');
-        }
-        if (in_array('..', $path, true) || in_array('.', $path, true)) {
-            throw new ForbiddenException();
-        }
-        $page = $subpage = null;
+        $page = $this->Pages->getBySlug('home');
+        $this->set(compact('page'));
+        $this->set('title', $page->title);
+        $this->set('basePagePath', '/');
+    }
 
-        if (!empty($path[0])) {
-            $page = $path[0];
-        }
-        if (!empty($path[1])) {
-            $subpage = $path[1];
-        }
-        $this->set(compact('page', 'subpage'));
-
-        try {
-            return $this->render(implode('/', $path));
-        } catch (MissingTemplateException $exception) {
-            if (Configure::read('debug')) {
-                throw $exception;
-            }
-            throw new NotFoundException();
-        }
+    /**
+     * About page
+     *
+     * @return void
+     */
+    public function about(): void
+    {
+        $page = $this->Pages->getBySlug('rolam');
+        $this->set(compact('page'));
+        $this->set('title', $page->title);
+        $this->set('basePagePath', '/rolam');
     }
 }

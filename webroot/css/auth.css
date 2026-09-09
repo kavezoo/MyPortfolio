@@ -1,0 +1,78 @@
+/* Auth pages (Tabler sign-in) */
+
+.auth-body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at top, rgba(255, 255, 255, 0.06), transparent 55%),
+        linear-gradient(160deg, #1a2332 0%, #121821 45%, #0d1219 100%);
+}
+
+.auth-brand {
+    color: #f3f5f7 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.auth-brand:hover {
+    color: #ffffff !important;
+}
+
+.auth-card {
+    border: 0;
+    border-radius: 0.75rem;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.12),
+        0 12px 28px rgba(0, 0, 0, 0.28),
+        0 28px 56px rgba(0, 0, 0, 0.22);
+}
+
+.auth-body .text-secondary a {
+    color: #9ec5fe;
+}
+
+.auth-body .text-secondary {
+    color: rgba(243, 245, 247, 0.72) !important;
+}
+
+.btn-auth-facebook {
+    background-color: #1877f2;
+    border-color: #1877f2;
+    color: #fff;
+}
+
+.btn-auth-facebook:hover,
+.btn-auth-facebook:focus {
+    background-color: #0f65d8;
+    border-color: #0f65d8;
+    color: #fff;
+}
+
+.btn-auth-google {
+    background-color: #fff;
+    border-color: #dadce0;
+    color: #3c4043;
+}
+
+.btn-auth-google:hover,
+.btn-auth-google:focus {
+    background-color: #f8f9fa;
+    border-color: #dadce0;
+    color: #3c4043;
+}
+
+.btn-auth-facebook .auth-social-icon,
+.btn-auth-google .auth-social-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+.auth-social-icon img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.auth-card .form-footer .btn {
+    font-weight: 600;
+}
